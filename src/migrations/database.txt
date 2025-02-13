@@ -1,0 +1,66 @@
+CREATE TABLE IF NOT EXISTS `accounts` (
+  `id` varchar(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `password` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+  `refresh_token` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `token_expires` bigint unsigned DEFAULT NULL,
+  `newPassword` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+  `oldPassword` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+  `role_id` int NOT NULL DEFAULT '0',
+  `status` tinyint(1) DEFAULT NULL,
+  `is_deleted` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
+  KEY `email` (`email`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+INSERT IGNORE INTO accounts (id, email, password, created_at, updated_at, deleted_at, status, refresh_token, token_expires, is_deleted, newPassword, oldPassword, role_id) VALUES("062f8c6d-0185-4e3f-bd2a-7c42e9b75081", "admin", "$2a$12$12nVCAR8wXDOYCW5u1FAXOhYvI3arBnC302dFNMCt4GSO0UIdZ/EW", "2022-09-29 10:27:55", "2024-06-24 14:20:25", NULL, 1, "U-YWtlkv-3E_x5MAluBGy", 1719300025001, NULL, "$2a$12$3WCy0ZX6eoAiDv9JsyQyluQTdu3U4djHbMZp4ZvX9Kc.ZEQMrBjgW", "$2a$12$7uuuUx9odGm7hu5OVImtCuhEkBPep3QAdhkrIrnx5lHw07Nbl/aXK", 0),("5d3ef7b7-e610-4f72-b298-1348673d7fd0", "admin@bookmenow.com.vn", "$2a$12$12nVCAR8wXDOYCW5u1FAXOhYvI3arBnC302dFNMCt4GSO0UIdZ/EW", "2022-09-29 10:27:55", "2024-06-24 14:20:25", NULL, 1, "U-YWtlkv-3E_x5MAluBGy", 1719300025001, NULL, "$2a$12$3WCy0ZX6eoAiDv9JsyQyluQTdu3U4djHbMZp4ZvX9Kc.ZEQMrBjgW", "$2a$12$7uuuUx9odGm7hu5OVImtCuhEkBPep3QAdhkrIrnx5lHw07Nbl/aXK", 1);
+
+CREATE TABLE IF NOT EXISTS `modules` (
+  `id` int(10) unsigned zerofill NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `module` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `icon` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
+  `sort_order` int unsigned DEFAULT '0',
+  `is_function` tinyint unsigned DEFAULT '0',
+  `status` tinyint unsigned DEFAULT '0',
+  `is_deleted` tinyint unsigned DEFAULT '0',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
+ALTER TABLE `modules` ADD COLUMN `dependency_modules` varchar(255) DEFAULT NULL;
+
+CREATE TABLE IF NOT EXISTS `roles` (
+  `id` int(10) unsigned zerofill NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `permissions` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `level` tinyint unsigned DEFAULT '0',
+  `db_filters` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+  `status` tinyint unsigned DEFAULT '0',
+  `is_deleted` tinyint unsigned DEFAULT '0',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=62 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
+
+INSERT IGNORE INTO roles (id,name, permissions, `level`, db_filters, status, is_deleted) VALUES(1,"Manager", '{"productcategorytypes":{"read":false,"write":false,"create":false,"delete":false},"users":{"read":false,"write":false,"create":false,"delete":false},"brieftargets":{"read":false,"write":false,"create":false,"delete":false},"imports":{"read":true,"write":true,"create":true,"delete":true},"briefs":{"read":true,"write":true,"create":true,"delete":true,"dependency_modules":"productcategorytypes,users,brieftargets"},"variants":{"read":false,"write":false,"create":false,"delete":false},"products":{"read":true,"write":true,"create":true,"delete":true},"productcategories":{"read":true,"write":true,"create":true,"delete":true,"dependency_modules":"productcategorytypes"},"typecontents":{"read":true,"write":true,"create":true,"delete":true,"dependency_modules":"attributes"},"channels":{"read":true,"write":true,"create":true,"delete":true,"dependency_modules":"attributes"},"contents":{"read":true,"write":true,"create":true,"delete":true,"dependency_modules":"attributes"},"socials":{"read":true,"write":true,"create":true,"delete":true,"dependency_modules":"attributes"},"topics":{"read":true,"write":true,"create":true,"delete":true,"dependency_modules":"attributes"},"attributeitemoptiontypes":{"read":false,"write":false,"create":false,"delete":false},"attributeitemoptions":{"read":true,"write":true,"create":true,"delete":true,"dependency_modules":"attributeitemoptiontypes"},"attributeitems":{"read":true,"write":true,"create":true,"delete":true,"dependency_modules":"attributes"},"attributes":{"read":false,"write":false,"create":false,"delete":false},"accounts":{"read":true,"write":true,"create":true,"delete":true},"roles":{"read":true,"write":true,"create":true,"delete":true},"modules":{"read":false,"write":false,"create":false,"delete":false}}', 0,"",1,0);
+
+CREATE TABLE IF NOT EXISTS `logs` (
+  `id` int(10) unsigned zerofill NOT NULL AUTO_INCREMENT,
+  `account_id` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+  `type` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+  `module` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+  `item_id` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+  `detail` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+  `status` smallint DEFAULT NULL,
+  `is_deleted` tinyint(1) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `deleted_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
