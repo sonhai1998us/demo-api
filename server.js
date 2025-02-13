@@ -40,6 +40,6 @@ try {
 	})
 
 	server = require('http').createServer(app);
-	server.listen(process.env.PORT);
+	server.listen(process.env.PORT || 3000);
 	console.log(`Api master | ${process.env.NODE_ENV} - ${process.pid} is running on port ${process.env.PORT}`);
-} catch (e) { console.log(e) }
+} catch (e) { console.log('ee',e, process.env) }
