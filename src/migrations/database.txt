@@ -64,3 +64,109 @@ CREATE TABLE IF NOT EXISTS `logs` (
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
+
+CREATE TABLE IF NOT EXISTS `templates` (
+    `id` int(10) unsigned zerofill NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(255) NOT NULL,
+    `type` ENUM('static', 'news') NOT NULL,
+    `order_index` INT NOT NULL DEFAULT 0, 
+    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    `status` smallint DEFAULT NULL,
+    `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    `deleted_at` timestamp NULL DEFAULT NULL,
+    PRIMARY KEY (`id`)
+);
+
+CREATE TABLE IF NOT EXISTS pages (
+    `id` int(10) unsigned zerofill NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(255) NOT NULL,
+    `status` smallint DEFAULT NULL,
+    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    `deleted_at` timestamp NULL DEFAULT NULL,
+    PRIMARY KEY (`id`)
+);
+
+CREATE TABLE IF NOT EXISTS page_templates (
+    `id` int(10) unsigned zerofill NOT NULL AUTO_INCREMENT,
+    `page_id` INT NOT NULL,
+    `template_id` INT NOT NULL,
+    `position_x` INT DEFAULT 0,
+    `position_y` INT DEFAULT 0,
+    `width` INT DEFAULT 300,
+    `height` INT DEFAULT 200,
+    `order_index` INT DEFAULT 0,
+    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    `deleted_at` timestamp NULL DEFAULT NULL,
+    PRIMARY KEY (`id`),
+    FOREIGN KEY (page_id) REFERENCES pages(id) ON DELETE CASCADE,
+    FOREIGN KEY (template_id) REFERENCES templates(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS news_categories (
+    `id` int(10) unsigned zerofill NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(255) NOT NULL,
+    `status` smallint DEFAULT NULL,
+    `deleted_at` timestamp NULL DEFAULT NULL,
+    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`)
+);
+
+CREATE TABLE IF NOT EXISTS news (
+    `id` int(10) unsigned zerofill NOT NULL AUTO_INCREMENT,
+    `category_id` INT NOT NULL,
+    `title` VARCHAR(255) NOT NULL,
+    `content` TEXT NOT NULL,
+    `image_url` TEXT,
+    `status` smallint DEFAULT NULL,
+    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    `deleted_at` timestamp NULL DEFAULT NULL,
+    PRIMARY KEY (`id`),
+    FOREIGN KEY (category_id) REFERENCES news_categories(id) ON DELETE CASCADE
+);
+ALTER TABLE elements ADD COLUMN name VARCHAR(255) DEFAULT NULL;
+ALTER TABLE pages ADD COLUMN slug VARCHAR(255) DEFAULT NULL;
+
+CREATE TABLE IF NOT EXISTS template_categories (
+    `id` int(10) unsigned zerofill NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(255) NOT NULL,
+    `status` smallint DEFAULT NULL,
+    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    `deleted_at` timestamp NULL DEFAULT NULL,
+    PRIMARY KEY (`id`)
+);
+ALTER TABLE templates ADD COLUMN category_id int(10) unsigned zerofill NOT NULL;
+ALTER TABLE templates ADD CONSTRAINT fk_category_id FOREIGN KEY (category_id) REFERENCES template_categories(id);
+ALTER TABLE templates ADD COLUMN image text DEFAULT NULL;
+ALTER TABLE templates ADD COLUMN image text DEFAULT NULL;
+ALTER TABLE template_categories ADD COLUMN sort_order int unsigned DEFAULT '0';
+
+CREATE TABLE IF NOT EXISTS page_components (
+    `id` int(10) unsigned zerofill NOT NULL AUTO_INCREMENT,
+    `template_id` INT NOT NULL,
+    `sort_order` int unsigned DEFAULT '0',
+    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    `deleted_at` timestamp NULL DEFAULT NULL,
+    PRIMARY KEY (`id`)
+);
+
+CREATE TABLE IF NOT EXISTS `elements` (
+    `id` int(10) unsigned zerofill NOT NULL AUTO_INCREMENT,
+    `component_id` INT NOT NULL,
+    `type` ENUM('text', 'image', 'item') NOT NULL,
+    `content` TEXT,
+    `font` VARCHAR(100),
+    `color` VARCHAR(20),
+    `size` INT,
+    `image` TEXT,
+    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    `deleted_at` timestamp NULL DEFAULT NULL,
+    PRIMARY KEY (`id`),
+    FOREIGN KEY (component_id) REFERENCES page_components(page_components) ON DELETE CASCADE
+);

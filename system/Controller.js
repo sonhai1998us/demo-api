@@ -10,7 +10,6 @@ const Model = require('./Model');
 const _ = require('lodash');
 const s3 = new AWS.S3({
     ACL: 'public-read',
-    endpoint: process.env.AWS_ENDPOINT_CMC,
     accessKeyId: process.env.AWS_ACCESS_KEY_CMC,
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY_CMC,
     region: process.env.AWS_REGION_CMC,
@@ -70,7 +69,7 @@ module.exports = class Controller {
                         reject(err);
                     } else {
                         //don't delete default image
-                        if (oldFile != '' && oldFile.indexOf('bmn/default')==-1) await s3.deleteObject({ Key: oldFile }).promise();
+                        if (oldFile != '' && oldFile.indexOf('demo/default')==-1) await s3.deleteObject({ Key: oldFile }).promise();
                         resolve(true);
                     }
                 });
