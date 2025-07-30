@@ -1,172 +1,77 @@
-CREATE TABLE IF NOT EXISTS `accounts` (
-  `id` varchar(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `password` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
-  `refresh_token` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `token_expires` bigint unsigned DEFAULT NULL,
-  `newPassword` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
-  `oldPassword` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
-  `role_id` int NOT NULL DEFAULT '0',
-  `status` tinyint(1) DEFAULT NULL,
-  `is_deleted` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `deleted_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`) USING BTREE,
-  KEY `email` (`email`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
-INSERT IGNORE INTO accounts (id, email, password, created_at, updated_at, deleted_at, status, refresh_token, token_expires, is_deleted, newPassword, oldPassword, role_id) VALUES("062f8c6d-0185-4e3f-bd2a-7c42e9b75081", "admin", "$2a$12$12nVCAR8wXDOYCW5u1FAXOhYvI3arBnC302dFNMCt4GSO0UIdZ/EW", "2022-09-29 10:27:55", "2024-06-24 14:20:25", NULL, 1, "U-YWtlkv-3E_x5MAluBGy", 1719300025001, NULL, "$2a$12$3WCy0ZX6eoAiDv9JsyQyluQTdu3U4djHbMZp4ZvX9Kc.ZEQMrBjgW", "$2a$12$7uuuUx9odGm7hu5OVImtCuhEkBPep3QAdhkrIrnx5lHw07Nbl/aXK", 0),("5d3ef7b7-e610-4f72-b298-1348673d7fd0", "admin@bookmenow.com.vn", "$2a$12$12nVCAR8wXDOYCW5u1FAXOhYvI3arBnC302dFNMCt4GSO0UIdZ/EW", "2022-09-29 10:27:55", "2024-06-24 14:20:25", NULL, 1, "U-YWtlkv-3E_x5MAluBGy", 1719300025001, NULL, "$2a$12$3WCy0ZX6eoAiDv9JsyQyluQTdu3U4djHbMZp4ZvX9Kc.ZEQMrBjgW", "$2a$12$7uuuUx9odGm7hu5OVImtCuhEkBPep3QAdhkrIrnx5lHw07Nbl/aXK", 1);
-
-CREATE TABLE IF NOT EXISTS `modules` (
-  `id` int(10) unsigned zerofill NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `module` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `icon` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT '',
-  `sort_order` int unsigned DEFAULT '0',
-  `is_function` tinyint unsigned DEFAULT '0',
-  `status` tinyint unsigned DEFAULT '0',
-  `is_deleted` tinyint unsigned DEFAULT '0',
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `deleted_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
-ALTER TABLE `modules` ADD COLUMN `dependency_modules` varchar(255) DEFAULT NULL;
-
-CREATE TABLE IF NOT EXISTS `roles` (
-  `id` int(10) unsigned zerofill NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `permissions` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `level` tinyint unsigned DEFAULT '0',
-  `db_filters` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
-  `status` tinyint unsigned DEFAULT '0',
-  `is_deleted` tinyint unsigned DEFAULT '0',
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `deleted_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=62 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
-
-INSERT IGNORE INTO roles (id,name, permissions, `level`, db_filters, status, is_deleted) VALUES(1,"Manager", '{"productcategorytypes":{"read":false,"write":false,"create":false,"delete":false},"users":{"read":false,"write":false,"create":false,"delete":false},"brieftargets":{"read":false,"write":false,"create":false,"delete":false},"imports":{"read":true,"write":true,"create":true,"delete":true},"briefs":{"read":true,"write":true,"create":true,"delete":true,"dependency_modules":"productcategorytypes,users,brieftargets"},"variants":{"read":false,"write":false,"create":false,"delete":false},"products":{"read":true,"write":true,"create":true,"delete":true},"productcategories":{"read":true,"write":true,"create":true,"delete":true,"dependency_modules":"productcategorytypes"},"typecontents":{"read":true,"write":true,"create":true,"delete":true,"dependency_modules":"attributes"},"channels":{"read":true,"write":true,"create":true,"delete":true,"dependency_modules":"attributes"},"contents":{"read":true,"write":true,"create":true,"delete":true,"dependency_modules":"attributes"},"socials":{"read":true,"write":true,"create":true,"delete":true,"dependency_modules":"attributes"},"topics":{"read":true,"write":true,"create":true,"delete":true,"dependency_modules":"attributes"},"attributeitemoptiontypes":{"read":false,"write":false,"create":false,"delete":false},"attributeitemoptions":{"read":true,"write":true,"create":true,"delete":true,"dependency_modules":"attributeitemoptiontypes"},"attributeitems":{"read":true,"write":true,"create":true,"delete":true,"dependency_modules":"attributes"},"attributes":{"read":false,"write":false,"create":false,"delete":false},"accounts":{"read":true,"write":true,"create":true,"delete":true},"roles":{"read":true,"write":true,"create":true,"delete":true},"modules":{"read":false,"write":false,"create":false,"delete":false}}', 0,"",1,0);
-
-CREATE TABLE IF NOT EXISTS `logs` (
-  `id` int(10) unsigned zerofill NOT NULL AUTO_INCREMENT,
-  `account_id` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
-  `type` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
-  `module` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
-  `item_id` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
-  `detail` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
-  `status` smallint DEFAULT NULL,
-  `is_deleted` tinyint(1) DEFAULT NULL,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
-
-CREATE TABLE IF NOT EXISTS `templates` (
-    `id` int(10) unsigned zerofill NOT NULL AUTO_INCREMENT,
-    `name` VARCHAR(255) NOT NULL,
-    `type` ENUM('static', 'news') NOT NULL,
-    `order_index` INT NOT NULL DEFAULT 0, 
-    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    `status` smallint DEFAULT NULL,
-    `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    `deleted_at` timestamp NULL DEFAULT NULL,
-    PRIMARY KEY (`id`)
-);
-
 CREATE TABLE IF NOT EXISTS pages (
-    `id` int(10) unsigned zerofill NOT NULL AUTO_INCREMENT,
-    `name` VARCHAR(255) NOT NULL,
-    `status` smallint DEFAULT NULL,
-    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    `deleted_at` timestamp NULL DEFAULT NULL,
-    PRIMARY KEY (`id`)
+  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  title VARCHAR(255) NOT NULL, -- Tên trang (e.g., "Home Page")
+  slug VARCHAR(100) UNIQUE NOT NULL, -- Slug cho URL (e.g., "home")
+  type ENUM('landing', 'news', 'about', 'other') NOT NULL, -- Loại trang
+  meta_title VARCHAR(255), -- Tiêu đề SEO
+  meta_description TEXT, -- Mô tả SEO
+  keywords JSON, -- Từ khóa SEO (dùng JSON hoặc VARCHAR nếu không hỗ trợ JSON)
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
-CREATE TABLE IF NOT EXISTS page_templates (
-    `id` int(10) unsigned zerofill NOT NULL AUTO_INCREMENT,
-    `page_id` INT NOT NULL,
-    `template_id` INT NOT NULL,
-    `position_x` INT DEFAULT 0,
-    `position_y` INT DEFAULT 0,
-    `width` INT DEFAULT 300,
-    `height` INT DEFAULT 200,
-    `order_index` INT DEFAULT 0,
-    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    `deleted_at` timestamp NULL DEFAULT NULL,
-    PRIMARY KEY (`id`),
-    FOREIGN KEY (page_id) REFERENCES pages(id) ON DELETE CASCADE,
-    FOREIGN KEY (template_id) REFERENCES templates(id) ON DELETE CASCADE
-);
-
-CREATE TABLE IF NOT EXISTS news_categories (
-    `id` int(10) unsigned zerofill NOT NULL AUTO_INCREMENT,
-    `name` VARCHAR(255) NOT NULL,
-    `status` smallint DEFAULT NULL,
-    `deleted_at` timestamp NULL DEFAULT NULL,
-    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    PRIMARY KEY (`id`)
+CREATE TABLE IF NOT EXISTS components (
+  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  page_id BIGINT NOT NULL, -- Liên kết đến trang
+  component_id VARCHAR(50) NOT NULL, -- ID duy nhất của component (e.g., "comp1")
+  type ENUM('text', 'image', 'news') NOT NULL, -- Loại component
+  props JSON, -- Thuộc tính component (nội dung, màu sắc, hình ảnh, v.v.)
+  order_index INT NOT NULL, -- Thứ tự trong layout
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  FOREIGN KEY (page_id) REFERENCES pages(id) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS news (
-    `id` int(10) unsigned zerofill NOT NULL AUTO_INCREMENT,
-    `category_id` INT NOT NULL,
-    `title` VARCHAR(255) NOT NULL,
-    `content` TEXT NOT NULL,
-    `image_url` TEXT,
-    `status` smallint DEFAULT NULL,
-    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    `deleted_at` timestamp NULL DEFAULT NULL,
-    PRIMARY KEY (`id`),
-    FOREIGN KEY (category_id) REFERENCES news_categories(id) ON DELETE CASCADE
-);
-ALTER TABLE elements ADD COLUMN name VARCHAR(255) DEFAULT NULL;
-ALTER TABLE pages ADD COLUMN slug VARCHAR(255) DEFAULT NULL;
-
-CREATE TABLE IF NOT EXISTS template_categories (
-    `id` int(10) unsigned zerofill NOT NULL AUTO_INCREMENT,
-    `name` VARCHAR(255) NOT NULL,
-    `status` smallint DEFAULT NULL,
-    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    `deleted_at` timestamp NULL DEFAULT NULL,
-    PRIMARY KEY (`id`)
-);
-ALTER TABLE templates ADD COLUMN category_id int(10) unsigned zerofill NOT NULL;
-ALTER TABLE templates ADD CONSTRAINT fk_category_id FOREIGN KEY (category_id) REFERENCES template_categories(id);
-ALTER TABLE templates ADD COLUMN image text DEFAULT NULL;
-ALTER TABLE templates ADD COLUMN image text DEFAULT NULL;
-ALTER TABLE template_categories ADD COLUMN sort_order int unsigned DEFAULT '0';
-
-CREATE TABLE IF NOT EXISTS page_components (
-    `id` int(10) unsigned zerofill NOT NULL AUTO_INCREMENT,
-    `template_id` INT NOT NULL,
-    `sort_order` int unsigned DEFAULT '0',
-    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    `deleted_at` timestamp NULL DEFAULT NULL,
-    PRIMARY KEY (`id`)
+  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  title VARCHAR(255) NOT NULL, -- Tiêu đề bài viết
+  content TEXT NOT NULL, -- Nội dung bài viết
+  category_id BIGINT, -- Liên kết đến danh mục
+  image VARCHAR(255), -- Hình ảnh đại diện
+  slug VARCHAR(100) UNIQUE NOT NULL, -- Slug cho URL bài viết
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE SET NULL
 );
 
-CREATE TABLE IF NOT EXISTS `elements` (
-    `id` int(10) unsigned zerofill NOT NULL AUTO_INCREMENT,
-    `component_id` INT NOT NULL,
-    `type` ENUM('text', 'image', 'item') NOT NULL,
-    `content` TEXT,
-    `font` VARCHAR(100),
-    `color` VARCHAR(20),
-    `size` INT,
-    `image` TEXT,
-    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    `deleted_at` timestamp NULL DEFAULT NULL,
-    PRIMARY KEY (`id`),
-    FOREIGN KEY (component_id) REFERENCES page_components(page_components) ON DELETE CASCADE
+CREATE TABLE IF NOT EXISTS categories (
+  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(100) NOT NULL, -- Tên danh mục (e.g., "Công nghệ")
+  slug VARCHAR(100) UNIQUE NOT NULL, -- Slug cho danh mục
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS templates (
+  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(255) NOT NULL, -- Tên template
+  type ENUM('landing', 'news', 'about', 'other') NOT NULL, -- Loại template
+  layout JSON NOT NULL, -- Cấu trúc layout giống components
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS users (
+  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  username VARCHAR(50) UNIQUE NOT NULL,
+  email VARCHAR(100) UNIQUE NOT NULL,
+  password VARCHAR(255) NOT NULL, -- Mã hóa bằng bcrypt
+  role ENUM('admin', 'editor') DEFAULT 'editor',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS page_versions (
+  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  page_id BIGINT NOT NULL,
+  layout JSON NOT NULL,
+  version INT NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (page_id) REFERENCES pages(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS component_types (
+  id BIGINT PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(50) UNIQUE NOT NULL, -- e.g., "text", "image"
+  default_props JSON -- Thuộc tính mặc định
 );

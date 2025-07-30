@@ -16,8 +16,8 @@ module.exports=method=>{
 			break;
 		case 'update':
 			_validation = [
-				check('id','Trường Id là bắt buộc').not().isEmpty(),
-				check('dependency_modules').optional().customSanitizer(value=>value.toString())
+				// check('id','Trường Id là bắt buộc').not().isEmpty(),
+				// check('dependency_modules').optional().customSanitizer(value=>value.toString())
 			]
 			break;
 		case 'delete':

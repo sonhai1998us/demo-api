@@ -63,7 +63,7 @@ fs.readdirSync(path.join(__dirname, '../modules')).map((module) => {
         // CRUD
         if (_ignore.includes(_router) == false) {
             router.route(`/${_router}`)
-                .get(isAccountCMSAuth, (req, res) => { _Function[trimSlash(req.route.path)].getAll(req, res); })
+                .get( (req, res) => { _Function[trimSlash(req.route.path)].getAll(req, res); })
                 .post(isAccountCMSAuth, (_Validator[_router] && _Validator[_router]('create') ? _Validator[_router]('create') : (req, res, next) => next()), (req, res) => { _Function[trimSlash(req.route.path)].create(req, res); })
                 .put(isAccountCMSAuth, (_Validator[_router] && _Validator[_router]('updates') ? _Validator[_router]('updates') : (req, res, next) => next()), (req, res) => { _Function[trimSlash(req.route.path)].updates(req, res); })
 

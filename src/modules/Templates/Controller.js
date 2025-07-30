@@ -10,7 +10,6 @@ module.exports = class extends Controller{
 		super(tableName);
     }
 
-	
 	async getAll(req, res) {
         try {
             const _data = await this.db.find(req);
@@ -21,19 +20,5 @@ module.exports = class extends Controller{
         } catch (e) {
             this.response(res, 500, e.message);
         }
-    }
-
-	async rempDataTemplates(data, access_token){
-        return new Promise(async (resolve)=>{
-            for (const item of data) {
-                item.template_category_name = await get(`${process.env.BASE_URL}/v1/template_categories/${item.category_id}?fq=status:1&fqnull=deleted_at`,{},access_token).then(res=> {
-					if(res.data.id){
-						return res.data?.name
-					}
-					return {}
-				}).catch(e=> console.log('e',e));
-            }
-            resolve(data)
-        })
     }
 }

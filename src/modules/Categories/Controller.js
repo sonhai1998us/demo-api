@@ -21,14 +21,4 @@ module.exports = class extends Controller{
             this.response(res, 500, e.message);
         }
     }
-
-	async rempDataTemplates(data, access_token){
-        return new Promise(async (resolve)=>{
-            for (const item of data) {
-                item.templates = await get(`${process.env.BASE_URL}/v1/templates/${item.id}`,{},access_token).then(res=>res?.data ?? []).catch(e=> console.log('e',e));
-            }
-            resolve(data)
-        })
-    }
-
 }
