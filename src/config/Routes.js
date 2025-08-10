@@ -64,13 +64,13 @@ fs.readdirSync(path.join(__dirname, '../modules')).map((module) => {
         if (_ignore.includes(_router) == false) {
             router.route(`/${_router}`)
                 .get( (req, res) => { _Function[trimSlash(req.route.path)].getAll(req, res); })
-                .post(isAccountCMSAuth, (_Validator[_router] && _Validator[_router]('create') ? _Validator[_router]('create') : (req, res, next) => next()), (req, res) => { _Function[trimSlash(req.route.path)].create(req, res); })
-                .put(isAccountCMSAuth, (_Validator[_router] && _Validator[_router]('updates') ? _Validator[_router]('updates') : (req, res, next) => next()), (req, res) => { _Function[trimSlash(req.route.path)].updates(req, res); })
+                .post((_Validator[_router] && _Validator[_router]('create') ? _Validator[_router]('create') : (req, res, next) => next()), (req, res) => { _Function[trimSlash(req.route.path)].create(req, res); })
+                .put((_Validator[_router] && _Validator[_router]('updates') ? _Validator[_router]('updates') : (req, res, next) => next()), (req, res) => { _Function[trimSlash(req.route.path)].updates(req, res); })
 
             router.route(`/${_router}/:id`)
-                .get(isAccountCMSAuth, (req, res) => { _Function[trimSlash(req.route.path)].get(req, res); })
-                .put(isAccountCMSAuth, (_Validator[_router] && _Validator[_router]('update') ? _Validator[_router]('update') : (req, res, next) => next()), (req, res) => { _Function[trimSlash(req.route.path)].update(req, res); })
-                .delete(isAccountCMSAuth, (_Validator[_router] && _Validator[_router]('delete') ? _Validator[_router]('delete') : (req, res, next) => next()), (req, res) => { _Function[trimSlash(req.route.path)].delete(req, res); });
+                .get((req, res) => { _Function[trimSlash(req.route.path)].get(req, res); })
+                .put((_Validator[_router] && _Validator[_router]('update') ? _Validator[_router]('update') : (req, res, next) => next()), (req, res) => { _Function[trimSlash(req.route.path)].update(req, res); })
+                .delete((_Validator[_router] && _Validator[_router]('delete') ? _Validator[_router]('delete') : (req, res, next) => next()), (req, res) => { _Function[trimSlash(req.route.path)].delete(req, res); });
         
         }
     }

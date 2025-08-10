@@ -1,77 +1,65 @@
-CREATE TABLE IF NOT EXISTS pages (
-  id BIGINT PRIMARY KEY AUTO_INCREMENT,
-  title VARCHAR(255) NOT NULL, -- Tên trang (e.g., "Home Page")
-  slug VARCHAR(100) UNIQUE NOT NULL, -- Slug cho URL (e.g., "home")
-  type ENUM('landing', 'news', 'about', 'other') NOT NULL, -- Loại trang
-  meta_title VARCHAR(255), -- Tiêu đề SEO
-  meta_description TEXT, -- Mô tả SEO
-  keywords JSON, -- Từ khóa SEO (dùng JSON hoặc VARCHAR nếu không hỗ trợ JSON)
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+CREATE TABLE IF NOT EXISTS milktea_and_coffees (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(255) NOT NULL,
+    price INT NOT NULL,
+    description TEXT,
+    image VARCHAR(500),
+    rating DECIMAL(3,2) DEFAULT 0.00,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
-CREATE TABLE IF NOT EXISTS components (
-  id BIGINT PRIMARY KEY AUTO_INCREMENT,
-  page_id BIGINT NOT NULL, -- Liên kết đến trang
-  component_id VARCHAR(50) NOT NULL, -- ID duy nhất của component (e.g., "comp1")
-  type ENUM('text', 'image', 'news') NOT NULL, -- Loại component
-  props JSON, -- Thuộc tính component (nội dung, màu sắc, hình ảnh, v.v.)
-  order_index INT NOT NULL, -- Thứ tự trong layout
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  FOREIGN KEY (page_id) REFERENCES pages(id) ON DELETE CASCADE
+CREATE TABLE IF NOT EXISTS toppings (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(255) NOT NULL,
+    price INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    deleted_at TIMESTAMP DEFAULT NULL
 );
 
-CREATE TABLE IF NOT EXISTS news (
-  id BIGINT PRIMARY KEY AUTO_INCREMENT,
-  title VARCHAR(255) NOT NULL, -- Tiêu đề bài viết
-  content TEXT NOT NULL, -- Nội dung bài viết
-  category_id BIGINT, -- Liên kết đến danh mục
-  image VARCHAR(255), -- Hình ảnh đại diện
-  slug VARCHAR(100) UNIQUE NOT NULL, -- Slug cho URL bài viết
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE SET NULL
+CREATE TABLE IF NOT EXISTS vouchers (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(255) NOT NULL,
+    value INT NOT NULL,
+    description TEXT,
+    type ENUM('percent', 'thousand') NOT NULL DEFAULT 'thousand',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    deleted_at TIMESTAMP DEFAULT NULL
 );
 
-CREATE TABLE IF NOT EXISTS categories (
-  id BIGINT PRIMARY KEY AUTO_INCREMENT,
-  name VARCHAR(100) NOT NULL, -- Tên danh mục (e.g., "Công nghệ")
-  slug VARCHAR(100) UNIQUE NOT NULL, -- Slug cho danh mục
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+CREATE TABLE IF NOT EXISTS cart_items (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    milktea_and_coffee_id BIGINT NOT NULL,
+    topping_id VARCHAR(255),
+    quantity INT NOT NULL DEFAULT 1,
+    sweetness ENUM('50%', '70%', '100%') DEFAULT '50%',
+    ice ENUM('Không đá', 'Có đá', 'Đá riêng') DEFAULT 'Có đá',
+    note TEXT,
+    total_price INT NOT NULL,
+    is_ordered BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    deleted_at TIMESTAMP DEFAULT NULL,
+    FOREIGN KEY (milktea_and_coffee_id) REFERENCES milktea_and_coffees(id) ON DELETE CASCADE,
+    FOREIGN KEY (topping_id) REFERENCES toppings(id) ON DELETE SET NULL
 );
 
-CREATE TABLE IF NOT EXISTS templates (
-  id BIGINT PRIMARY KEY AUTO_INCREMENT,
-  name VARCHAR(255) NOT NULL, -- Tên template
-  type ENUM('landing', 'news', 'about', 'other') NOT NULL, -- Loại template
-  layout JSON NOT NULL, -- Cấu trúc layout giống components
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+CREATE TABLE IF NOT EXISTS orders (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    cart_id VARCHAR(255),
+    total_price INT NOT NULL,
+    payment_method ENUM('Tiền mặt', 'Chuyển khoản') NOT NULL DEFAULT 'Tiền mặt',
+    order_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    is_completed BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    deleted_at TIMESTAMP DEFAULT NULL
 );
 
-CREATE TABLE IF NOT EXISTS users (
-  id BIGINT PRIMARY KEY AUTO_INCREMENT,
-  username VARCHAR(50) UNIQUE NOT NULL,
-  email VARCHAR(100) UNIQUE NOT NULL,
-  password VARCHAR(255) NOT NULL, -- Mã hóa bằng bcrypt
-  role ENUM('admin', 'editor') DEFAULT 'editor',
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-);
-
-CREATE TABLE IF NOT EXISTS page_versions (
-  id BIGINT PRIMARY KEY AUTO_INCREMENT,
-  page_id BIGINT NOT NULL,
-  layout JSON NOT NULL,
-  version INT NOT NULL,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  FOREIGN KEY (page_id) REFERENCES pages(id) ON DELETE CASCADE
-);
-
-CREATE TABLE IF NOT EXISTS component_types (
-  id BIGINT PRIMARY KEY AUTO_INCREMENT,
-  name VARCHAR(50) UNIQUE NOT NULL, -- e.g., "text", "image"
-  default_props JSON -- Thuộc tính mặc định
-);
+ALTER TABLE milktea_and_coffees ADD COLUMN deleted_at TIMESTAMP DEFAULT NULL;
+ALTER TABLE toppings ADD COLUMN deleted_at TIMESTAMP DEFAULT NULL;
+ALTER TABLE vouchers ADD COLUMN deleted_at TIMESTAMP DEFAULT NULL;
+ALTER TABLE cart_items ADD COLUMN deleted_at TIMESTAMP DEFAULT NULL;
+ALTER TABLE orders ADD COLUMN deleted_at TIMESTAMP DEFAULT NULL;

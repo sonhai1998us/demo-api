@@ -246,7 +246,7 @@ module.exports = class Controller {
                 }
 
                 this.db.insert(_data);
-                this.response(res, 201);
+                this.response(res, 201, {status: "success"});
             }
         } catch (e) {
             this.response(res, 500, e.message);
@@ -387,7 +387,7 @@ module.exports = class Controller {
                 else this.response(res, 200);
             }
         }catch (e) {
-            this.response(res, 500, e.message);
+            this.response(res, 500, e);
         }
     }
 
@@ -395,10 +395,9 @@ module.exports = class Controller {
         try {
             // Validate
             const _check = await this.validate(req, res);
-
             if (_check == false) {
                 this.db.delete({ id: req.params.id });
-                this.response(res, 204);
+                this.response(res, 204,{status: "success"});
             }
         } catch (e) {
             this.response(res, 500, e.message);
