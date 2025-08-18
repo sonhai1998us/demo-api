@@ -37,7 +37,7 @@
 		"is-base64": "^1.1.0",
 		"jsonwebtoken": "^8.5.1",
 		"lodash": "^4.17.21",
-		"module-alias": "^2.2.2",
+		"module-alias": "^2.2.3",
 		"moment": "^2.29.1",
 		"moment-range": "^4.0.2",
 		"multiparty": "^4.2.3",
