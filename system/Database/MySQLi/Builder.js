@@ -176,8 +176,8 @@ module.exports = class Builder {
             mergeField += ','+joinQuery?.mergeField
         }
       }
-      
       let countQuery = rawQuery.replace(`DISTINCT ${this.tb}.*`, `COUNT(DISTINCT ${conditions?.query?.fields ? conditions.query.fields.split(',').map(field=>`${this.tb}.${field}`).join(',') :this.tb+".id"}) AS total`);
+      
       if(mergeField){
         rawQuery =rawQuery.replace(`${this.tb}.*`, mergeField);
       }
@@ -359,17 +359,34 @@ module.exports = class Builder {
           }
         })
       }
-      // console.log(rawQuery + whereQuery + sortQuery + ` LIMIT ? OFFSET ?`);
-      const [
-        [data],
-        [[count]]
-      ] = await Promise.all([
-        this.connection.promise().query(rawQuery + whereQuery + sortQuery + ` LIMIT ? OFFSET ?`, [...params, Number(_limit), Number(_offset)]),
-        this.connection.promise().query(countQuery + whereQuery, params)
-      ])
+
+      const [res1, res2] = await Promise.allSettled([
+        this.connection.promise().query(
+          rawQuery + whereQuery + sortQuery + ` LIMIT ? OFFSET ?`, 
+          [...params, Number(_limit), Number(_offset)]
+        ),
+        this.connection.promise().query(
+          countQuery + whereQuery, 
+          params
+        )
+      ]);
+      
+      let data = null;
+      let count = 0;
+      
+      // Lấy data nếu query 1 thành công
+      if (res1.status === "fulfilled") {
+        [data] = res1.value; // query trả về [rows, fields]
+      }
+      
+      // Lấy count nếu query 2 thành công
+      if (res2.status === "fulfilled") {
+        [[{ total: count }]] = res2.value; // query trả về [[{ total: số }], fields]
+      }
+      
       return {
         data: data || null,
-        total: count?.total ?? 0,
+        total: count ?? 0,
       };
     } catch (e) {
       console.log('e', e);
@@ -560,7 +577,6 @@ module.exports = class Builder {
         total: count?.total ?? 0,
       };
     } catch (e) {
-      console.log('e', e);
       throw new Error(e.message);
     }
   }
