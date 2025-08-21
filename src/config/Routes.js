@@ -79,7 +79,7 @@ fs.readdirSync(path.join(__dirname, '../modules')).map((module) => {
 //SYSTEM
 router.route('/set-log').post((req, res) => { _Function.logs.create(req, res); });
 
-router.route('/print-test').post((req, res) => { _Function.cart_items.test(req, res); });
+router.route('/print-bill').post((req, res) => { _Function.cart_items.printBill(req, res); });
 
 //CMS
 router.route('/login').post(_Validator.accounts('login'), (req, res) => _Function.accounts.login(req, res));

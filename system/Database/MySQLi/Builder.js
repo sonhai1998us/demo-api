@@ -144,7 +144,7 @@ module.exports = class Builder {
       let _search = conditions?.query?.s ?? '';
       let _whereNot = conditions?.query?.fqnot ?? '';
       let _whereNull = conditions?.query?.fqnull ?? '';
-      let _limit = conditions?.query?.limit ?? 10; if (_limit > 1000) _limit = 1000;
+      let _limit = conditions?.query?.limit ?? 100; if (_limit > 1000) _limit = 1000;
       let _offset = conditions?.query?.offset ?? 0;
       let _sort = conditions?.query?.sort ?? '';
       let joinQueries = conditions?.query?.joinQueries ?? '';

@@ -4,6 +4,31 @@
 const Controller = require('@system/Controller');
 const Model = require('@system/Model');
 const {get} = require('@utils/Helper');
+const escpos = require('escpos');
+escpos.Network = require('escpos-network');
+const { Jimp } = require('jimp');
+const LOGO_URL = 'https://cdn.demo-online.xyz/logo2.png';
+
+async function getLogoBufferFromUrl(logoUrl) {
+  try {
+    if (!Jimp.read) {
+      throw new Error('Jimp.read không được định nghĩa. Vui lòng kiểm tra phiên bản Jimp.');
+    }
+    const image = await Jimp.read(logoUrl);
+    if (!image) {
+      throw new Error('Không thể tải ảnh từ URL');
+    }
+    image
+      .resize(200, 200, Jimp.RESIZE_BILINEAR)
+      .grayscale()
+      .contrast(1)
+      .threshold({ max: 128 });
+    return await escpos.Image.load(image);
+  } catch (error) {
+    console.error('Lỗi tải hoặc xử lý logo từ CDN:', error);
+    throw error;
+  }
+}
 
 module.exports = class extends Controller{
 
