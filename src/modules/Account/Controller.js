@@ -390,7 +390,7 @@ module.exports = class extends Controller {
   async getPermissions(_id, _role_id, _type){
     try {
         const _modules = await axios.get(`${process.env.BASE_URL}/v1/modules?limit=1000&sort=-name`, { headers: { Authorization: `Token ${genToken()}` } }).then((resp) => resp.data).catch((e) => {});
-       
+       console.log(`${process.env.BASE_URL}/v1/modules?limit=1000&sort=-name`,_modules);
         let _permissions = {};
 
         if(_id !== process.env.ADMIN_ID){

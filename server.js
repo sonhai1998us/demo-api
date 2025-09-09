@@ -21,7 +21,53 @@ try {
 		app.use(helmet());
 	}
 
-	app.use(cors());
+	// Cấu hình CORS chi tiết để khắc phục vấn đề
+	const corsOptions = {
+		origin: function (origin, callback) {
+			// Cho phép tất cả origins trong development
+			if (process.env.NODE_ENV === 'development') {
+				callback(null, true);
+			} else {
+				// Trong production, chỉ cho phép các domains cụ thể
+				const allowedOrigins = [
+					'http://localhost:3000',
+					'http://localhost:3001',
+					'http://localhost:8080',
+					'http://127.0.0.1:3000',
+					'http://127.0.0.1:3001',
+					'http://127.0.0.1:8080',
+					// Thêm các domains khác nếu cần
+				];
+				
+				if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+					callback(null, true);
+				} else {
+					callback(new Error('Not allowed by CORS'));
+				}
+			}
+		},
+		credentials: true, // Cho phép gửi cookies và headers xác thực
+		methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+		allowedHeaders: [
+			'Origin',
+			'X-Requested-With',
+			'Content-Type',
+			'Accept',
+			'Authorization',
+			'X-Access-Token',
+			'X-Key',
+			'Cache-Control',
+			'Pragma'
+		],
+		exposedHeaders: ['Content-Length', 'X-Requested-With'],
+		maxAge: 86400 // Cache preflight request trong 24 giờ
+	};
+
+	app.use(cors(corsOptions));
+	
+	// Thêm middleware để xử lý preflight requests
+	app.options('*', cors(corsOptions));
+	
 	app.use(bodyParser.json({ limit: '100mb' }));
 	app.use(bodyParser.urlencoded({ extended: true }));
 	app.use((err, req, res, next) => {
@@ -40,6 +86,6 @@ try {
 	})
 
 	server = require('http').createServer(app);
-	server.listen(process.env.PORT || 3000);
+	server.listen(process.env.PORT || 3000, '0.0.0.0');
 	console.log(`Api master | ${process.env.NODE_ENV} - ${process.pid} is running on port ${process.env.PORT}`);
 } catch (e) { console.log('ee',e, process.env) }
