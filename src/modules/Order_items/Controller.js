@@ -16,30 +16,38 @@ module.exports = class extends Controller{
 	async getAll(req, res) {
 		try {
 			if(!req.query?.fqnull) req.query.fqnull = "deleted_at"
-			req.query.joinQueries = [{
-				fieldJoin: 'product_id',
-				fieldTarget: 'id',
-				table: 'products',
-				mergeField: 'products.name as product_name, products.base_price as product_price',
-			},{
-				fieldJoin: 'size_id',
-				fieldTarget: 'id',
-				table: 'sizes',
-				mergeField: 'sizes.name as size_name',
-			},
-			{
-				fieldJoin: 'ice_id',
-				fieldTarget: 'id',
-				table: 'ice_levels',
-				mergeField: 'ice_levels.label as ice_name',
-			},
-			{
-				fieldJoin: 'sweetness_id',
-				fieldTarget: 'id',
-				table: 'sweetness_levels',
-				mergeField: 'sweetness_levels.label as sweetness_name',
-			},
-		];
+			req.query.joinQueries = [
+				{
+					fieldJoin: 'product_id',
+					fieldTarget: 'id',
+					table: 'products',
+					mergeField: 'products.name as product_name, products.base_price as product_price',
+				},
+				{
+					fieldJoin: 'topping_id',
+					fieldTarget: 'id',
+					table: 'toppings',
+					mergeField: 'toppings.name as topping_name, toppings.price as topping_price',
+				},
+				{
+					fieldJoin: 'size_id',
+					fieldTarget: 'id',
+					table: 'sizes',
+					mergeField: 'sizes.name as size_name',
+				},
+				{
+					fieldJoin: 'ice_id',
+					fieldTarget: 'id',
+					table: 'ice_levels',
+					mergeField: 'ice_levels.label as ice_name',
+				},
+				{
+					fieldJoin: 'sweetness_id',
+					fieldTarget: 'id',
+					table: 'sweetness_levels',
+					mergeField: 'sweetness_levels.label as sweetness_name',
+				},
+			];
 			const _data = await this.db.find(req);
 			if (_data?.data && _data.data.length > 0)
 				_data.data = await this.rempDataMapping(_data.data, req.access_token);
@@ -64,8 +72,27 @@ module.exports = class extends Controller{
 		const cartWithToppings = await Promise.all(
 			data.map(async (item) => {
 				const toppings = order_item_topping_data?.data.filter(tr => tr.order_item_id === item.id).map(tr => {return {id: tr.id, name: tr.name, price: tr.price}});
-				const sizePriceData = await get(`${process.env.BASE_URL}/v1/product_size_prices?fq=product_id:${item.product_id},size_id:${item.size_id}`, {}, 'Token').then(resp => resp?.data ?? {}).catch((e) => { });
-			  return { ...item, size_price: sizePriceData?.[0]?.price, toppings };
+				
+				// Chỉ lấy size_price nếu là PRODUCT và có product_id, size_id
+				let sizePriceData = null;
+				if (item.item_type === 'PRODUCT' && item.product_id && item.size_id) {
+					sizePriceData = await get(`${process.env.BASE_URL}/v1/product_size_prices?fq=product_id:${item.product_id},size_id:${item.size_id}`, {}, 'Token').then(resp => resp?.data ?? {}).catch((e) => { });
+				}
+				
+				// Mapping theo item_type
+				let mappedItem = { ...item, size_price: sizePriceData?.[0]?.price || null, toppings };
+				
+				// Nếu là TOPPING, sử dụng topping_name và topping_price
+				if (item.item_type === 'TOPPING') {
+					mappedItem.item_name = item.topping_name || '';
+					mappedItem.item_price = item.topping_price || 0;
+				} else if (item.item_type === 'PRODUCT') {
+					// Nếu là PRODUCT, sử dụng product_name và product_price
+					mappedItem.item_name = item.product_name || '';
+					mappedItem.item_price = item.product_price || 0;
+				}
+				
+				return mappedItem;
 			})
 		  );
 		  
@@ -88,7 +115,9 @@ module.exports = class extends Controller{
 			quantity,
 			unit_price,
 			toppings,
-			notes
+			topping_id,
+			notes,
+			item_type
 		  } = req.body;
   
 		//   _data.id = nanoid()
@@ -100,6 +129,8 @@ module.exports = class extends Controller{
 		  _data.quantity = quantity;
 		  _data.unit_price = unit_price;
 		  _data.notes = notes;
+		  _data.item_type = item_type;
+		  _data.topping_id = topping_id;
 		  _data.created_at = new Date();
 		  _data.updated_at = new Date();
 		  await this.db.insert(_data,'id')
