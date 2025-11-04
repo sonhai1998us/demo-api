@@ -93,29 +93,37 @@ module.exports = class extends Controller {
 	async getAll(req, res) {
 		try {
 			if (!req.query?.fqnull) req.query.fqnull = "deleted_at"
-			req.query.joinQueries = [{
-				fieldJoin: 'product_id',
-				fieldTarget: 'id',
-				table: 'products',
-				mergeField: 'products.name as product_name, products.base_price as product_price',
-			}, {
-				fieldJoin: 'size_id',
-				fieldTarget: 'id',
-				table: 'sizes',
-				mergeField: 'sizes.name as size_name',
-			},
-			{
-				fieldJoin: 'ice_id',
-				fieldTarget: 'id',
-				table: 'ice_levels',
-				mergeField: 'ice_levels.label as ice_name',
-			},
-			{
-				fieldJoin: 'sweetness_id',
-				fieldTarget: 'id',
-				table: 'sweetness_levels',
-				mergeField: 'sweetness_levels.label as sweetness_name',
-			},
+			req.query.joinQueries = [
+				{
+					fieldJoin: 'product_id',
+					fieldTarget: 'id',
+					table: 'products',
+					mergeField: 'products.name as product_name, products.base_price as product_price',
+				},
+				{
+					fieldJoin: 'topping_id',
+					fieldTarget: 'id',
+					table: 'toppings',
+					mergeField: 'toppings.name as topping_name, toppings.price as topping_price',
+				},
+				{
+					fieldJoin: 'size_id',
+					fieldTarget: 'id',
+					table: 'sizes',
+					mergeField: 'sizes.name as size_name',
+				},
+				{
+					fieldJoin: 'ice_id',
+					fieldTarget: 'id',
+					table: 'ice_levels',
+					mergeField: 'ice_levels.label as ice_name',
+				},
+				{
+					fieldJoin: 'sweetness_id',
+					fieldTarget: 'id',
+					table: 'sweetness_levels',
+					mergeField: 'sweetness_levels.label as sweetness_name',
+				},
 			];
 			const _data = await this.db.find(req);
 			if (_data?.data && _data.data.length > 0)
@@ -145,8 +153,27 @@ module.exports = class extends Controller {
 		const cartWithToppings = await Promise.all(
 			data.map(async (item) => {
 				const toppings = cart_item_topping_data?.data.filter(tr => tr.cart_item_id === item.id).map(tr => { return { id: tr.id, name: tr.name, price: tr.price } });
-				const sizePriceData = await get(`${process.env.BASE_URL}/v1/product_size_prices?fq=product_id:${item.product_id},size_id:${item.size_id}`, {}, 'Token').then(resp => resp?.data ?? {}).catch((e) => { });
-				return { ...item, size_price: sizePriceData?.[0]?.price, toppings };
+				
+				// Chỉ lấy size_price nếu là PRODUCT và có product_id, size_id
+				let sizePriceData = null;
+				if (item.item_type === 'PRODUCT' && item.product_id && item.size_id) {
+					sizePriceData = await get(`${process.env.BASE_URL}/v1/product_size_prices?fq=product_id:${item.product_id},size_id:${item.size_id}`, {}, 'Token').then(resp => resp?.data ?? {}).catch((e) => { });
+				}
+				
+				// Mapping theo item_type
+				let mappedItem = { ...item, size_price: sizePriceData?.[0]?.price || null, toppings };
+				
+				// Nếu là TOPPING, sử dụng topping_name và topping_price
+				if (item.item_type === 'TOPPING') {
+					mappedItem.item_name = item.topping_name || '';
+					mappedItem.item_price = item.topping_price || 0;
+				} else if (item.item_type === 'PRODUCT') {
+					// Nếu là PRODUCT, sử dụng product_name và product_price
+					mappedItem.item_name = item.product_name || '';
+					mappedItem.item_price = item.product_price || 0;
+				}
+				
+				return mappedItem;
 			})
 		);
 
@@ -169,10 +196,17 @@ module.exports = class extends Controller {
 
 			// tính tổng 1 dòng hàng
 			const itemLineTotal = (item) => {
-				const base = (Number(item.product_price) || 0) + (Number(item.size_price) || 0);
-				const toppingsSum = (item.toppings || []).reduce((s, t) => s + (Number(t.price) || 0), 0);
-				const unit = base + toppingsSum; // giá cho 1 đơn vị (đã cộng size + topping)
-				return unit * (Number(item.quantity) || 0);
+				if (item.item_type === 'TOPPING') {
+					// Nếu là TOPPING, chỉ tính giá topping
+					const toppingPrice = Number(item.item_price || item.topping_price || 0);
+					return toppingPrice * (Number(item.quantity) || 0);
+				} else {
+					// Nếu là PRODUCT, tính base + size + toppings
+					const base = (Number(item.item_price || item.product_price) || 0) + (Number(item.size_price) || 0);
+					const toppingsSum = (item.toppings || []).reduce((s, t) => s + (Number(t.price) || 0), 0);
+					const unit = base + toppingsSum; // giá cho 1 đơn vị (đã cộng size + topping)
+					return unit * (Number(item.quantity) || 0);
+				}
 			};
 
 			// tổng trước giảm
@@ -234,41 +268,53 @@ module.exports = class extends Controller {
 					// Dòng sản phẩm
 					(order.items || []).forEach((item) => {
 						const qty = Number(item.quantity) || 0;
-						const basePrice = (Number(item.product_price) || 0) + (Number(item.size_price) || 0);
 						const lineTotal = itemLineTotal(item);
+						
+						// Xác định tên hiển thị dựa trên item_type
+						const displayName = item.item_name || item.product_name || item.topping_name || '';
 
 						// Tên + dòng chính (đã nhân SL)
 						printer.tableCustom([
-							{ text: removeVietnameseTones(item.product_name || ''), align: 'LEFT', width: 0.5 },
+							{ text: removeVietnameseTones(displayName), align: 'LEFT', width: 0.5 },
 							{ text: String(qty), align: 'CENTER', width: 0.15 },
 							{ text: vnd(lineTotal), align: 'RIGHT', width: 0.35 },
 						]);
 
-						// Size (nếu có)
-						if (item.size_name) {
-							const sp = Number(item.size_price) || 0;
+						// Nếu là TOPPING, chỉ hiển thị giá topping
+						if (item.item_type === 'TOPPING') {
+							const toppingPrice = Number(item.item_price || item.topping_price || 0);
 							printer.text(
-								removeVietnameseTones(
-									`   Size: ${item.size_name} ${sp ? `(+${vnd(sp)} /sp)` : ''}`
-								)
+								removeVietnameseTones(`   Gia: ${vnd(toppingPrice)} /sp x ${qty} = ${vnd(toppingPrice * qty)}`)
 							);
-						}
+						} else {
+							// Nếu là PRODUCT, hiển thị size, giá sản phẩm, và toppings
+							// Size (nếu có)
+							if (item.size_name) {
+								const sp = Number(item.size_price) || 0;
+								printer.text(
+									removeVietnameseTones(
+										`   Size: ${item.size_name} ${sp ? `(+${vnd(sp)} /sp)` : ''}`
+									)
+								);
+							}
 
-						// Giá gốc sản phẩm (nếu muốn show rõ)
-						if (item.product_price != null) {
-							printer.text(
-								removeVietnameseTones(`   Gia san pham: ${vnd(item.product_price)} /sp`)
-							);
-						}
+							// Giá gốc sản phẩm (nếu muốn show rõ)
+							const productPrice = Number(item.item_price || item.product_price || 0);
+							if (productPrice > 0) {
+								printer.text(
+									removeVietnameseTones(`   Gia san pham: ${vnd(productPrice)} /sp`)
+								);
+							}
 
-						// Topping (mỗi topping hiển thị giá / 1 sp, có *SL* để rõ tổng)
-						(item.toppings || []).forEach((t) => {
-							const tp = Number(t.price) || 0;
-							// hiển thị +Giá topping/1 sp và nhân SL để người dùng hiểu tổng
-							printer.text(
-								removeVietnameseTones(`   + Topping: ${t.name} (+${vnd(tp)} /sp) x ${qty}`)
-							);
-						});
+							// Topping (mỗi topping hiển thị giá / 1 sp, có *SL* để rõ tổng)
+							(item.toppings || []).forEach((t) => {
+								const tp = Number(t.price) || 0;
+								// hiển thị +Giá topping/1 sp và nhân SL để người dùng hiểu tổng
+								printer.text(
+									removeVietnameseTones(`   + Topping: ${t.name} (+${vnd(tp)} /sp) x ${qty}`)
+								);
+							});
+						}
 
 						// Ghi chú
 						if (item.notes) {

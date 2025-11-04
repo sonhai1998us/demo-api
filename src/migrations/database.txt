@@ -231,3 +231,32 @@ CREATE TABLE IF NOT EXISTS `logs` (
   `deleted_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci ROW_FORMAT=DYNAMIC;
+
+ALTER TABLE toppings
+  ADD COLUMN sellable TINYINT(1) NOT NULL DEFAULT 1;
+
+ALTER TABLE order_items
+  MODIFY COLUMN product_id INT NULL,
+  MODIFY COLUMN size_id INT NULL,
+  MODIFY COLUMN sweetness_id INT NULL,
+  MODIFY COLUMN ice_id INT NULL,
+  ADD COLUMN topping_id INT NULL AFTER product_id,
+  ADD CONSTRAINT fk_order_items_topping
+    FOREIGN KEY (topping_id) REFERENCES toppings(id) ON DELETE RESTRICT,
+  ADD COLUMN item_type ENUM('PRODUCT','TOPPING') NOT NULL DEFAULT 'PRODUCT' AFTER topping_id;
+
+  ALTER TABLE cart_items
+    MODIFY COLUMN product_id INT NULL,
+    MODIFY COLUMN size_id INT NULL,
+    MODIFY COLUMN sweetness_id INT NULL,
+    MODIFY COLUMN ice_id INT NULL,
+    ADD COLUMN topping_id INT NULL AFTER product_id,
+    ADD CONSTRAINT fk_cart_items_topping
+      FOREIGN KEY (topping_id) REFERENCES toppings(id) ON DELETE RESTRICT,
+    ADD COLUMN item_type ENUM('PRODUCT','TOPPING') NOT NULL DEFAULT 'PRODUCT' AFTER topping_id;
+
+  ALTER TABLE cart_item_toppings
+    ADD COLUMN quantity INT NOT NULL DEFAULT 1;
+  
+  ALTER TABLE order_item_toppings
+    ADD COLUMN quantity INT NOT NULL DEFAULT 1;
