@@ -41,13 +41,17 @@ module.exports = class extends Controller {
                     SELECT 
                         DATE_FORMAT(o.order_time, '${dateFormat}') as date,
                         p.name as product_name,
+                        (SELECT GROUP_CONCAT(t.name ORDER BY t.name SEPARATOR ', ') 
+                         FROM order_item_toppings oit 
+                         JOIN toppings t ON oit.topping_id = t.id 
+                         WHERE oit.order_item_id = oi.id) as toppings,
                         SUM(oi.quantity) as total_quantity,
-                        SUM(oi.quantity * oi.unit_price) as total_revenue
+                        SUM(oi.quantity * (oi.unit_price + IFNULL((SELECT SUM(t.price) FROM order_item_toppings oit JOIN toppings t ON oit.topping_id = t.id WHERE oit.order_item_id = oi.id), 0))) as total_revenue
                     FROM orders o
                     JOIN order_items oi ON o.id = oi.order_id
                     JOIN products p ON oi.product_id = p.id
                     WHERE ${whereClause}
-                    GROUP BY ${groupBy}, p.id, p.name
+                    GROUP BY ${groupBy}, p.id, p.name, toppings
                     ORDER BY date ASC, total_revenue DESC
                 `;
             } else {

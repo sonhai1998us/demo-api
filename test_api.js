@@ -2,7 +2,7 @@ const http = require('http');
 
 const options = {
     hostname: 'localhost',
-    port: 8101,
+    port: 8102,
     path: '/v1/revenues?startDate=2023-01-01&endDate=2025-12-31&type=month&scope=product',
     method: 'GET'
 };
