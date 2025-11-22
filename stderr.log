@@ -1,0 +1,877 @@
+(node:461079) NOTE: The AWS SDK for JavaScript (v2) will enter maintenance mode
+on September 8, 2024 and reach end-of-support on September 8, 2025.
+
+Please migrate your code to use AWS SDK for JavaScript (v3).
+For more information, check blog post at https://a.co/cUPnyil
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:525927) NOTE: The AWS SDK for JavaScript (v2) will enter maintenance mode
+on September 8, 2024 and reach end-of-support on September 8, 2025.
+
+Please migrate your code to use AWS SDK for JavaScript (v3).
+For more information, check blog post at https://a.co/cUPnyil
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:1243496) NOTE: The AWS SDK for JavaScript (v2) will enter maintenance mode
+on September 8, 2024 and reach end-of-support on September 8, 2025.
+
+Please migrate your code to use AWS SDK for JavaScript (v3).
+For more information, check blog post at https://a.co/cUPnyil
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:613385) NOTE: The AWS SDK for JavaScript (v2) will enter maintenance mode
+on September 8, 2024 and reach end-of-support on September 8, 2025.
+
+Please migrate your code to use AWS SDK for JavaScript (v3).
+For more information, check blog post at https://a.co/cUPnyil
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:3605816) NOTE: The AWS SDK for JavaScript (v2) will enter maintenance mode
+on September 8, 2024 and reach end-of-support on September 8, 2025.
+
+Please migrate your code to use AWS SDK for JavaScript (v3).
+For more information, check blog post at https://a.co/cUPnyil
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:3612126) NOTE: The AWS SDK for JavaScript (v2) will enter maintenance mode
+on September 8, 2024 and reach end-of-support on September 8, 2025.
+
+Please migrate your code to use AWS SDK for JavaScript (v3).
+For more information, check blog post at https://a.co/cUPnyil
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:3613686) NOTE: The AWS SDK for JavaScript (v2) will enter maintenance mode
+on September 8, 2024 and reach end-of-support on September 8, 2025.
+
+Please migrate your code to use AWS SDK for JavaScript (v3).
+For more information, check blog post at https://a.co/cUPnyil
+(Use `node --trace-warnings ...` to show where the warning was created)
+/home/yssxyhq/builderApi/node_modules/mysql2/promise.js:341
+    const localErr = new Error();
+                     ^
+
+Error: Invalid default value for 'ice'
+    at PromisePool.query (/home/yssxyhq/builderApi/node_modules/mysql2/promise.js:341:22)
+    at /home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:37:37
+    at Array.map (<anonymous>)
+    at /home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:32:16
+    at Array.map (<anonymous>)
+    at migrationDB (/home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:26:71)
+    at module.exports (/home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:61:5)
+    at Object.<anonymous> (/home/yssxyhq/builderApi/system/Database/MySQLi/Builder.js:11:50)
+    at Module._compile (node:internal/modules/cjs/loader:1469:14)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1548:10) {
+  code: 'ER_INVALID_DEFAULT',
+  errno: 1067,
+  sql: 'CREATE TABLE IF NOT EXISTS cart_items (\n' +
+    '    id BIGINT PRIMARY KEY AUTO_INCREMENT,\n' +
+    '    milktea_and_coffee_id BIGINT NOT NULL,\n' +
+    '    topping_id VARCHAR(255),\n' +
+    '    quantity INT NOT NULL DEFAULT 1,\n' +
+    "    sweetness ENUM('50%', '70%', '100%') DEFAULT '50%',\n" +
+    "    ice ENUM('Không đá', 'Có đá', 'Đá riêng') DEFAULT 'Có đá',\n" +
+    '    note TEXT,\n' +
+    '    total_price INT NOT NULL,\n' +
+    '    is_ordered BOOLEAN DEFAULT FALSE,\n' +
+    '    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\n' +
+    '    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\n' +
+    '    deleted_at TIMESTAMP DEFAULT NULL,\n' +
+    '    FOREIGN KEY (milktea_and_coffee_id) REFERENCES milktea_and_coffees(id) ON DELETE CASCADE,\n' +
+    '    FOREIGN KEY (topping_id) REFERENCES toppings(id) ON DELETE SET NULL\n' +
+    ');',
+  sqlState: '42000',
+  sqlMessage: "Invalid default value for 'ice'"
+}
+
+Node.js v20.17.0
+(node:3614520) NOTE: The AWS SDK for JavaScript (v2) will enter maintenance mode
+on September 8, 2024 and reach end-of-support on September 8, 2025.
+
+Please migrate your code to use AWS SDK for JavaScript (v3).
+For more information, check blog post at https://a.co/cUPnyil
+(Use `node --trace-warnings ...` to show where the warning was created)
+/home/yssxyhq/builderApi/node_modules/mysql2/promise.js:341
+    const localErr = new Error();
+                     ^
+
+Error: Invalid default value for 'ice'
+    at PromisePool.query (/home/yssxyhq/builderApi/node_modules/mysql2/promise.js:341:22)
+    at /home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:37:37
+    at Array.map (<anonymous>)
+    at /home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:32:16
+    at Array.map (<anonymous>)
+    at migrationDB (/home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:26:71)
+    at module.exports (/home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:61:5)
+    at Object.<anonymous> (/home/yssxyhq/builderApi/system/Database/MySQLi/Builder.js:11:50)
+    at Module._compile (node:internal/modules/cjs/loader:1469:14)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1548:10) {
+  code: 'ER_INVALID_DEFAULT',
+  errno: 1067,
+  sql: 'CREATE TABLE IF NOT EXISTS cart_items (\n' +
+    '    id BIGINT PRIMARY KEY AUTO_INCREMENT,\n' +
+    '    milktea_and_coffee_id BIGINT NOT NULL,\n' +
+    '    topping_id VARCHAR(255),\n' +
+    '    quantity INT NOT NULL DEFAULT 1,\n' +
+    "    sweetness ENUM('50%', '70%', '100%') DEFAULT '50%',\n" +
+    "    ice ENUM('Không đá', 'Có đá', 'Đá riêng') DEFAULT 'Có đá',\n" +
+    '    note TEXT,\n' +
+    '    total_price INT NOT NULL,\n' +
+    '    is_ordered BOOLEAN DEFAULT FALSE,\n' +
+    '    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\n' +
+    '    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\n' +
+    '    deleted_at TIMESTAMP DEFAULT NULL,\n' +
+    '    FOREIGN KEY (milktea_and_coffee_id) REFERENCES milktea_and_coffees(id) ON DELETE CASCADE,\n' +
+    '    FOREIGN KEY (topping_id) REFERENCES toppings(id) ON DELETE SET NULL\n' +
+    ');',
+  sqlState: '42000',
+  sqlMessage: "Invalid default value for 'ice'"
+}
+
+Node.js v20.17.0
+(node:3614634) NOTE: The AWS SDK for JavaScript (v2) will enter maintenance mode
+on September 8, 2024 and reach end-of-support on September 8, 2025.
+
+Please migrate your code to use AWS SDK for JavaScript (v3).
+For more information, check blog post at https://a.co/cUPnyil
+(Use `node --trace-warnings ...` to show where the warning was created)
+/home/yssxyhq/builderApi/node_modules/mysql2/promise.js:341
+    const localErr = new Error();
+                     ^
+
+Error: Invalid default value for 'ice'
+    at PromisePool.query (/home/yssxyhq/builderApi/node_modules/mysql2/promise.js:341:22)
+    at /home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:37:37
+    at Array.map (<anonymous>)
+    at /home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:32:16
+    at Array.map (<anonymous>)
+    at migrationDB (/home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:26:71)
+    at module.exports (/home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:61:5)
+    at Object.<anonymous> (/home/yssxyhq/builderApi/system/Database/MySQLi/Builder.js:11:50)
+    at Module._compile (node:internal/modules/cjs/loader:1469:14)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1548:10) {
+  code: 'ER_INVALID_DEFAULT',
+  errno: 1067,
+  sql: 'CREATE TABLE IF NOT EXISTS cart_items (\n' +
+    '    id BIGINT PRIMARY KEY AUTO_INCREMENT,\n' +
+    '    milktea_and_coffee_id BIGINT NOT NULL,\n' +
+    '    topping_id VARCHAR(255),\n' +
+    '    quantity INT NOT NULL DEFAULT 1,\n' +
+    "    sweetness ENUM('50%', '70%', '100%') DEFAULT '50%',\n" +
+    "    ice ENUM('Không đá', 'Có đá', 'Đá riêng') DEFAULT 'Có đá',\n" +
+    '    note TEXT,\n' +
+    '    total_price INT NOT NULL,\n' +
+    '    is_ordered BOOLEAN DEFAULT FALSE,\n' +
+    '    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\n' +
+    '    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\n' +
+    '    deleted_at TIMESTAMP DEFAULT NULL,\n' +
+    '    FOREIGN KEY (milktea_and_coffee_id) REFERENCES milktea_and_coffees(id) ON DELETE CASCADE,\n' +
+    '    FOREIGN KEY (topping_id) REFERENCES toppings(id) ON DELETE SET NULL\n' +
+    ');',
+  sqlState: '42000',
+  sqlMessage: "Invalid default value for 'ice'"
+}
+
+Node.js v20.17.0
+(node:3614815) NOTE: The AWS SDK for JavaScript (v2) will enter maintenance mode
+on September 8, 2024 and reach end-of-support on September 8, 2025.
+
+Please migrate your code to use AWS SDK for JavaScript (v3).
+For more information, check blog post at https://a.co/cUPnyil
+(Use `node --trace-warnings ...` to show where the warning was created)
+/home/yssxyhq/builderApi/node_modules/mysql2/promise.js:341
+    const localErr = new Error();
+                     ^
+
+Error: Invalid default value for 'ice'
+    at PromisePool.query (/home/yssxyhq/builderApi/node_modules/mysql2/promise.js:341:22)
+    at /home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:37:37
+    at Array.map (<anonymous>)
+    at /home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:32:16
+    at Array.map (<anonymous>)
+    at migrationDB (/home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:26:71)
+    at module.exports (/home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:61:5)
+    at Object.<anonymous> (/home/yssxyhq/builderApi/system/Database/MySQLi/Builder.js:11:50)
+    at Module._compile (node:internal/modules/cjs/loader:1469:14)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1548:10) {
+  code: 'ER_INVALID_DEFAULT',
+  errno: 1067,
+  sql: 'CREATE TABLE IF NOT EXISTS cart_items (\n' +
+    '    id BIGINT PRIMARY KEY AUTO_INCREMENT,\n' +
+    '    milktea_and_coffee_id BIGINT NOT NULL,\n' +
+    '    topping_id VARCHAR(255),\n' +
+    '    quantity INT NOT NULL DEFAULT 1,\n' +
+    "    sweetness ENUM('50%', '70%', '100%') DEFAULT '50%',\n" +
+    "    ice ENUM('Không đá', 'Có đá', 'Đá riêng') DEFAULT 'Có đá',\n" +
+    '    note TEXT,\n' +
+    '    total_price INT NOT NULL,\n' +
+    '    is_ordered BOOLEAN DEFAULT FALSE,\n' +
+    '    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\n' +
+    '    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\n' +
+    '    deleted_at TIMESTAMP DEFAULT NULL,\n' +
+    '    FOREIGN KEY (milktea_and_coffee_id) REFERENCES milktea_and_coffees(id) ON DELETE CASCADE,\n' +
+    '    FOREIGN KEY (topping_id) REFERENCES toppings(id) ON DELETE SET NULL\n' +
+    ');',
+  sqlState: '42000',
+  sqlMessage: "Invalid default value for 'ice'"
+}
+
+Node.js v20.17.0
+(node:3617496) NOTE: The AWS SDK for JavaScript (v2) will enter maintenance mode
+on September 8, 2024 and reach end-of-support on September 8, 2025.
+
+Please migrate your code to use AWS SDK for JavaScript (v3).
+For more information, check blog post at https://a.co/cUPnyil
+(Use `node --trace-warnings ...` to show where the warning was created)
+/home/yssxyhq/builderApi/node_modules/mysql2/promise.js:341
+    const localErr = new Error();
+                     ^
+
+Error: Invalid default value for 'ice'
+    at PromisePool.query (/home/yssxyhq/builderApi/node_modules/mysql2/promise.js:341:22)
+    at /home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:37:37
+    at Array.map (<anonymous>)
+    at /home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:32:16
+    at Array.map (<anonymous>)
+    at migrationDB (/home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:26:71)
+    at module.exports (/home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:61:5)
+    at Object.<anonymous> (/home/yssxyhq/builderApi/system/Database/MySQLi/Builder.js:11:50)
+    at Module._compile (node:internal/modules/cjs/loader:1469:14)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1548:10) {
+  code: 'ER_INVALID_DEFAULT',
+  errno: 1067,
+  sql: 'CREATE TABLE IF NOT EXISTS cart_items (\n' +
+    '    id BIGINT PRIMARY KEY AUTO_INCREMENT,\n' +
+    '    milktea_and_coffee_id BIGINT NOT NULL,\n' +
+    '    topping_id VARCHAR(255),\n' +
+    '    quantity INT NOT NULL DEFAULT 1,\n' +
+    "    sweetness ENUM('50%', '70%', '100%') DEFAULT '50%',\n" +
+    "    ice ENUM('Không đá', 'Có đá', 'Đá riêng') DEFAULT 'Có đá',\n" +
+    '    note TEXT,\n' +
+    '    total_price INT NOT NULL,\n' +
+    '    is_ordered BOOLEAN DEFAULT FALSE,\n' +
+    '    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\n' +
+    '    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\n' +
+    '    deleted_at TIMESTAMP DEFAULT NULL,\n' +
+    '    FOREIGN KEY (milktea_and_coffee_id) REFERENCES milktea_and_coffees(id) ON DELETE CASCADE,\n' +
+    '    FOREIGN KEY (topping_id) REFERENCES toppings(id) ON DELETE SET NULL\n' +
+    ');',
+  sqlState: '42000',
+  sqlMessage: "Invalid default value for 'ice'"
+}
+
+Node.js v20.17.0
+(node:3619002) NOTE: The AWS SDK for JavaScript (v2) will enter maintenance mode
+on September 8, 2024 and reach end-of-support on September 8, 2025.
+
+Please migrate your code to use AWS SDK for JavaScript (v3).
+For more information, check blog post at https://a.co/cUPnyil
+(Use `node --trace-warnings ...` to show where the warning was created)
+/home/yssxyhq/builderApi/node_modules/mysql2/promise.js:341
+    const localErr = new Error();
+                     ^
+
+Error: Invalid default value for 'ice'
+    at PromisePool.query (/home/yssxyhq/builderApi/node_modules/mysql2/promise.js:341:22)
+    at /home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:37:37
+    at Array.map (<anonymous>)
+    at /home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:32:16
+    at Array.map (<anonymous>)
+    at migrationDB (/home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:26:71)
+    at module.exports (/home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:61:5)
+    at Object.<anonymous> (/home/yssxyhq/builderApi/system/Database/MySQLi/Builder.js:11:50)
+    at Module._compile (node:internal/modules/cjs/loader:1469:14)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1548:10) {
+  code: 'ER_INVALID_DEFAULT',
+  errno: 1067,
+  sql: 'CREATE TABLE IF NOT EXISTS cart_items (\n' +
+    '    id BIGINT PRIMARY KEY AUTO_INCREMENT,\n' +
+    '    milktea_and_coffee_id BIGINT NOT NULL,\n' +
+    '    topping_id VARCHAR(255),\n' +
+    '    quantity INT NOT NULL DEFAULT 1,\n' +
+    "    sweetness ENUM('50%', '70%', '100%') DEFAULT '50%',\n" +
+    "    ice ENUM('Không đá', 'Có đá', 'Đá riêng') DEFAULT 'Có đá',\n" +
+    '    note TEXT,\n' +
+    '    total_price INT NOT NULL,\n' +
+    '    is_ordered BOOLEAN DEFAULT FALSE,\n' +
+    '    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\n' +
+    '    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\n' +
+    '    deleted_at TIMESTAMP DEFAULT NULL,\n' +
+    '    FOREIGN KEY (milktea_and_coffee_id) REFERENCES milktea_and_coffees(id) ON DELETE CASCADE,\n' +
+    '    FOREIGN KEY (topping_id) REFERENCES toppings(id) ON DELETE SET NULL\n' +
+    ');',
+  sqlState: '42000',
+  sqlMessage: "Invalid default value for 'ice'"
+}
+
+Node.js v20.17.0
+(node:3619764) NOTE: The AWS SDK for JavaScript (v2) will enter maintenance mode
+on September 8, 2024 and reach end-of-support on September 8, 2025.
+
+Please migrate your code to use AWS SDK for JavaScript (v3).
+For more information, check blog post at https://a.co/cUPnyil
+(Use `node --trace-warnings ...` to show where the warning was created)
+/home/yssxyhq/builderApi/node_modules/mysql2/promise.js:341
+    const localErr = new Error();
+                     ^
+
+Error: Invalid default value for 'ice'
+    at PromisePool.query (/home/yssxyhq/builderApi/node_modules/mysql2/promise.js:341:22)
+    at /home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:37:37
+    at Array.map (<anonymous>)
+    at /home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:32:16
+    at Array.map (<anonymous>)
+    at migrationDB (/home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:26:71)
+    at module.exports (/home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:61:5)
+    at Object.<anonymous> (/home/yssxyhq/builderApi/system/Database/MySQLi/Builder.js:11:50)
+    at Module._compile (node:internal/modules/cjs/loader:1469:14)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1548:10) {
+  code: 'ER_INVALID_DEFAULT',
+  errno: 1067,
+  sql: 'CREATE TABLE IF NOT EXISTS cart_items (\n' +
+    '    id BIGINT PRIMARY KEY AUTO_INCREMENT,\n' +
+    '    milktea_and_coffee_id BIGINT NOT NULL,\n' +
+    '    topping_id VARCHAR(255),\n' +
+    '    quantity INT NOT NULL DEFAULT 1,\n' +
+    "    sweetness ENUM('50%', '70%', '100%') DEFAULT '50%',\n" +
+    "    ice ENUM('Không đá', 'Có đá', 'Đá riêng') DEFAULT 'Có đá',\n" +
+    '    note TEXT,\n' +
+    '    total_price INT NOT NULL,\n' +
+    '    is_ordered BOOLEAN DEFAULT FALSE,\n' +
+    '    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\n' +
+    '    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\n' +
+    '    deleted_at TIMESTAMP DEFAULT NULL,\n' +
+    '    FOREIGN KEY (milktea_and_coffee_id) REFERENCES milktea_and_coffees(id) ON DELETE CASCADE,\n' +
+    '    FOREIGN KEY (topping_id) REFERENCES toppings(id) ON DELETE SET NULL\n' +
+    ');',
+  sqlState: '42000',
+  sqlMessage: "Invalid default value for 'ice'"
+}
+
+Node.js v20.17.0
+(node:3619806) NOTE: The AWS SDK for JavaScript (v2) will enter maintenance mode
+on September 8, 2024 and reach end-of-support on September 8, 2025.
+
+Please migrate your code to use AWS SDK for JavaScript (v3).
+For more information, check blog post at https://a.co/cUPnyil
+(Use `node --trace-warnings ...` to show where the warning was created)
+/home/yssxyhq/builderApi/node_modules/mysql2/promise.js:341
+    const localErr = new Error();
+                     ^
+
+Error: Invalid default value for 'ice'
+    at PromisePool.query (/home/yssxyhq/builderApi/node_modules/mysql2/promise.js:341:22)
+    at /home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:37:37
+    at Array.map (<anonymous>)
+    at /home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:32:16
+    at Array.map (<anonymous>)
+    at migrationDB (/home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:26:71)
+    at module.exports (/home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:61:5)
+    at Object.<anonymous> (/home/yssxyhq/builderApi/system/Database/MySQLi/Builder.js:11:50)
+    at Module._compile (node:internal/modules/cjs/loader:1469:14)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1548:10) {
+  code: 'ER_INVALID_DEFAULT',
+  errno: 1067,
+  sql: 'CREATE TABLE IF NOT EXISTS cart_items (\n' +
+    '    id BIGINT PRIMARY KEY AUTO_INCREMENT,\n' +
+    '    milktea_and_coffee_id BIGINT NOT NULL,\n' +
+    '    topping_id VARCHAR(255),\n' +
+    '    quantity INT NOT NULL DEFAULT 1,\n' +
+    "    sweetness ENUM('50%', '70%', '100%') DEFAULT '50%',\n" +
+    "    ice ENUM('Không đá', 'Có đá', 'Đá riêng') DEFAULT 'Có đá',\n" +
+    '    note TEXT,\n' +
+    '    total_price INT NOT NULL,\n' +
+    '    is_ordered BOOLEAN DEFAULT FALSE,\n' +
+    '    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\n' +
+    '    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\n' +
+    '    deleted_at TIMESTAMP DEFAULT NULL,\n' +
+    '    FOREIGN KEY (milktea_and_coffee_id) REFERENCES milktea_and_coffees(id) ON DELETE CASCADE,\n' +
+    '    FOREIGN KEY (topping_id) REFERENCES toppings(id) ON DELETE SET NULL\n' +
+    ');',
+  sqlState: '42000',
+  sqlMessage: "Invalid default value for 'ice'"
+}
+
+Node.js v20.17.0
+(node:3619991) NOTE: The AWS SDK for JavaScript (v2) will enter maintenance mode
+on September 8, 2024 and reach end-of-support on September 8, 2025.
+
+Please migrate your code to use AWS SDK for JavaScript (v3).
+For more information, check blog post at https://a.co/cUPnyil
+(Use `node --trace-warnings ...` to show where the warning was created)
+/home/yssxyhq/builderApi/node_modules/mysql2/promise.js:341
+    const localErr = new Error();
+                     ^
+
+Error: Invalid default value for 'ice'
+    at PromisePool.query (/home/yssxyhq/builderApi/node_modules/mysql2/promise.js:341:22)
+    at /home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:37:37
+    at Array.map (<anonymous>)
+    at /home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:32:16
+    at Array.map (<anonymous>)
+    at migrationDB (/home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:26:71)
+    at module.exports (/home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:61:5)
+    at Object.<anonymous> (/home/yssxyhq/builderApi/system/Database/MySQLi/Builder.js:11:50)
+    at Module._compile (node:internal/modules/cjs/loader:1469:14)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1548:10) {
+  code: 'ER_INVALID_DEFAULT',
+  errno: 1067,
+  sql: 'CREATE TABLE IF NOT EXISTS cart_items (\n' +
+    '    id BIGINT PRIMARY KEY AUTO_INCREMENT,\n' +
+    '    milktea_and_coffee_id BIGINT NOT NULL,\n' +
+    '    topping_id VARCHAR(255),\n' +
+    '    quantity INT NOT NULL DEFAULT 1,\n' +
+    "    sweetness ENUM('50%', '70%', '100%') DEFAULT '50%',\n" +
+    "    ice ENUM('Không đá', 'Có đá', 'Đá riêng') DEFAULT 'Có đá',\n" +
+    '    note TEXT,\n' +
+    '    total_price INT NOT NULL,\n' +
+    '    is_ordered BOOLEAN DEFAULT FALSE,\n' +
+    '    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\n' +
+    '    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\n' +
+    '    deleted_at TIMESTAMP DEFAULT NULL,\n' +
+    '    FOREIGN KEY (milktea_and_coffee_id) REFERENCES milktea_and_coffees(id) ON DELETE CASCADE,\n' +
+    '    FOREIGN KEY (topping_id) REFERENCES toppings(id) ON DELETE SET NULL\n' +
+    ');',
+  sqlState: '42000',
+  sqlMessage: "Invalid default value for 'ice'"
+}
+
+Node.js v20.17.0
+(node:3620368) NOTE: The AWS SDK for JavaScript (v2) will enter maintenance mode
+on September 8, 2024 and reach end-of-support on September 8, 2025.
+
+Please migrate your code to use AWS SDK for JavaScript (v3).
+For more information, check blog post at https://a.co/cUPnyil
+(Use `node --trace-warnings ...` to show where the warning was created)
+/home/yssxyhq/builderApi/node_modules/mysql2/promise.js:341
+    const localErr = new Error();
+                     ^
+
+Error: Invalid default value for 'ice'
+    at PromisePool.query (/home/yssxyhq/builderApi/node_modules/mysql2/promise.js:341:22)
+    at /home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:37:37
+    at Array.map (<anonymous>)
+    at /home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:32:16
+    at Array.map (<anonymous>)
+    at migrationDB (/home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:26:71)
+    at module.exports (/home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:61:5)
+    at Object.<anonymous> (/home/yssxyhq/builderApi/system/Database/MySQLi/Builder.js:11:50)
+    at Module._compile (node:internal/modules/cjs/loader:1469:14)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1548:10) {
+  code: 'ER_INVALID_DEFAULT',
+  errno: 1067,
+  sql: 'CREATE TABLE IF NOT EXISTS cart_items (\n' +
+    '    id BIGINT PRIMARY KEY AUTO_INCREMENT,\n' +
+    '    milktea_and_coffee_id BIGINT NOT NULL,\n' +
+    '    topping_id VARCHAR(255),\n' +
+    '    quantity INT NOT NULL DEFAULT 1,\n' +
+    "    sweetness ENUM('50%', '70%', '100%') DEFAULT '50%',\n" +
+    "    ice ENUM('Không đá', 'Có đá', 'Đá riêng') DEFAULT 'Có đá',\n" +
+    '    note TEXT,\n' +
+    '    total_price INT NOT NULL,\n' +
+    '    is_ordered BOOLEAN DEFAULT FALSE,\n' +
+    '    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\n' +
+    '    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,\n' +
+    '    deleted_at TIMESTAMP DEFAULT NULL,\n' +
+    '    FOREIGN KEY (milktea_and_coffee_id) REFERENCES milktea_and_coffees(id) ON DELETE CASCADE,\n' +
+    '    FOREIGN KEY (topping_id) REFERENCES toppings(id) ON DELETE SET NULL\n' +
+    ');',
+  sqlState: '42000',
+  sqlMessage: "Invalid default value for 'ice'"
+}
+
+Node.js v20.17.0
+(node:3639785) NOTE: The AWS SDK for JavaScript (v2) will enter maintenance mode
+on September 8, 2024 and reach end-of-support on September 8, 2025.
+
+Please migrate your code to use AWS SDK for JavaScript (v3).
+For more information, check blog post at https://a.co/cUPnyil
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:3640622) NOTE: The AWS SDK for JavaScript (v2) will enter maintenance mode
+on September 8, 2024 and reach end-of-support on September 8, 2025.
+
+Please migrate your code to use AWS SDK for JavaScript (v3).
+For more information, check blog post at https://a.co/cUPnyil
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:118620) NOTE: The AWS SDK for JavaScript (v2) will enter maintenance mode
+on September 8, 2024 and reach end-of-support on September 8, 2025.
+
+Please migrate your code to use AWS SDK for JavaScript (v3).
+For more information, check blog post at https://a.co/cUPnyil
+(Use `node --trace-warnings ...` to show where the warning was created)
+/home/yssxyhq/builderApi/node_modules/mysql2/promise.js:341
+    const localErr = new Error();
+                     ^
+
+Error: Access denied for user 'yssxyhq_yssxyhq_cms_basic'@'cp036009.cloudfly.vn' (using password: YES)
+    at PromisePool.query (/home/yssxyhq/builderApi/node_modules/mysql2/promise.js:341:22)
+    at /home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:37:37
+    at Array.map (<anonymous>)
+    at /home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:32:16
+    at Array.map (<anonymous>)
+    at migrationDB (/home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:26:71)
+    at module.exports (/home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:61:5)
+    at Object.<anonymous> (/home/yssxyhq/builderApi/system/Database/MySQLi/Builder.js:11:50)
+    at Module._compile (node:internal/modules/cjs/loader:1469:14)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1548:10) {
+  code: 'ER_ACCESS_DENIED_ERROR',
+  errno: 1045,
+  sql: undefined,
+  sqlState: '28000',
+  sqlMessage: "Access denied for user 'yssxyhq_yssxyhq_cms_basic'@'cp036009.cloudfly.vn' (using password: YES)"
+}
+
+Node.js v20.17.0
+(node:119926) NOTE: The AWS SDK for JavaScript (v2) will enter maintenance mode
+on September 8, 2024 and reach end-of-support on September 8, 2025.
+
+Please migrate your code to use AWS SDK for JavaScript (v3).
+For more information, check blog post at https://a.co/cUPnyil
+(Use `node --trace-warnings ...` to show where the warning was created)
+/home/yssxyhq/builderApi/node_modules/mysql2/promise.js:341
+    const localErr = new Error();
+                     ^
+
+Error: Access denied for user 'yssxyhq_yssxyhq_cms_basic'@'cp036009.cloudfly.vn' (using password: YES)
+    at PromisePool.query (/home/yssxyhq/builderApi/node_modules/mysql2/promise.js:341:22)
+    at /home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:37:37
+    at Array.map (<anonymous>)
+    at /home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:32:16
+    at Array.map (<anonymous>)
+    at migrationDB (/home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:26:71)
+    at module.exports (/home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:61:5)
+    at Object.<anonymous> (/home/yssxyhq/builderApi/system/Database/MySQLi/Builder.js:11:50)
+    at Module._compile (node:internal/modules/cjs/loader:1469:14)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1548:10) {
+  code: 'ER_ACCESS_DENIED_ERROR',
+  errno: 1045,
+  sql: undefined,
+  sqlState: '28000',
+  sqlMessage: "Access denied for user 'yssxyhq_yssxyhq_cms_basic'@'cp036009.cloudfly.vn' (using password: YES)"
+}
+
+Node.js v20.17.0
+(node:121907) NOTE: The AWS SDK for JavaScript (v2) will enter maintenance mode
+on September 8, 2024 and reach end-of-support on September 8, 2025.
+
+Please migrate your code to use AWS SDK for JavaScript (v3).
+For more information, check blog post at https://a.co/cUPnyil
+(Use `node --trace-warnings ...` to show where the warning was created)
+/home/yssxyhq/builderApi/node_modules/mysql2/promise.js:341
+    const localErr = new Error();
+                     ^
+
+Error: Access denied for user 'yssxyhq_yssxyhq_cms_basic'@'cp036009.cloudfly.vn' (using password: YES)
+    at PromisePool.query (/home/yssxyhq/builderApi/node_modules/mysql2/promise.js:341:22)
+    at /home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:37:37
+    at Array.map (<anonymous>)
+    at /home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:32:16
+    at Array.map (<anonymous>)
+    at migrationDB (/home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:26:71)
+    at module.exports (/home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:61:5)
+    at Object.<anonymous> (/home/yssxyhq/builderApi/system/Database/MySQLi/Builder.js:11:50)
+    at Module._compile (node:internal/modules/cjs/loader:1469:14)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1548:10) {
+  code: 'ER_ACCESS_DENIED_ERROR',
+  errno: 1045,
+  sql: undefined,
+  sqlState: '28000',
+  sqlMessage: "Access denied for user 'yssxyhq_yssxyhq_cms_basic'@'cp036009.cloudfly.vn' (using password: YES)"
+}
+
+Node.js v20.17.0
+(node:123410) NOTE: The AWS SDK for JavaScript (v2) will enter maintenance mode
+on September 8, 2024 and reach end-of-support on September 8, 2025.
+
+Please migrate your code to use AWS SDK for JavaScript (v3).
+For more information, check blog post at https://a.co/cUPnyil
+(Use `node --trace-warnings ...` to show where the warning was created)
+/home/yssxyhq/builderApi/node_modules/mysql2/promise.js:341
+    const localErr = new Error();
+                     ^
+
+Error: Access denied for user 'yssxyhq_yssxyhq_cms_basic'@'cp036009.cloudfly.vn' (using password: YES)
+    at PromisePool.query (/home/yssxyhq/builderApi/node_modules/mysql2/promise.js:341:22)
+    at /home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:37:37
+    at Array.map (<anonymous>)
+    at /home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:32:16
+    at Array.map (<anonymous>)
+    at migrationDB (/home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:26:71)
+    at module.exports (/home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:61:5)
+    at Object.<anonymous> (/home/yssxyhq/builderApi/system/Database/MySQLi/Builder.js:11:50)
+    at Module._compile (node:internal/modules/cjs/loader:1469:14)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1548:10) {
+  code: 'ER_ACCESS_DENIED_ERROR',
+  errno: 1045,
+  sql: undefined,
+  sqlState: '28000',
+  sqlMessage: "Access denied for user 'yssxyhq_yssxyhq_cms_basic'@'cp036009.cloudfly.vn' (using password: YES)"
+}
+
+Node.js v20.17.0
+(node:128056) NOTE: The AWS SDK for JavaScript (v2) will enter maintenance mode
+on September 8, 2024 and reach end-of-support on September 8, 2025.
+
+Please migrate your code to use AWS SDK for JavaScript (v3).
+For more information, check blog post at https://a.co/cUPnyil
+(Use `node --trace-warnings ...` to show where the warning was created)
+/home/yssxyhq/builderApi/node_modules/mysql2/promise.js:341
+    const localErr = new Error();
+                     ^
+
+Error: Access denied for user 'yssxyhq_yssxyhq_cms_basic'@'cp036009.cloudfly.vn' (using password: YES)
+    at PromisePool.query (/home/yssxyhq/builderApi/node_modules/mysql2/promise.js:341:22)
+    at /home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:37:37
+    at Array.map (<anonymous>)
+    at /home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:32:16
+    at Array.map (<anonymous>)
+    at migrationDB (/home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:26:71)
+    at module.exports (/home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:61:5)
+    at Object.<anonymous> (/home/yssxyhq/builderApi/system/Database/MySQLi/Builder.js:11:50)
+    at Module._compile (node:internal/modules/cjs/loader:1469:14)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1548:10) {
+  code: 'ER_ACCESS_DENIED_ERROR',
+  errno: 1045,
+  sql: undefined,
+  sqlState: '28000',
+  sqlMessage: "Access denied for user 'yssxyhq_yssxyhq_cms_basic'@'cp036009.cloudfly.vn' (using password: YES)"
+}
+
+Node.js v20.17.0
+(node:128096) NOTE: The AWS SDK for JavaScript (v2) will enter maintenance mode
+on September 8, 2024 and reach end-of-support on September 8, 2025.
+
+Please migrate your code to use AWS SDK for JavaScript (v3).
+For more information, check blog post at https://a.co/cUPnyil
+(Use `node --trace-warnings ...` to show where the warning was created)
+/home/yssxyhq/builderApi/node_modules/mysql2/promise.js:341
+    const localErr = new Error();
+                     ^
+
+Error: Access denied for user 'yssxyhq_yssxyhq_cms_basic'@'cp036009.cloudfly.vn' (using password: YES)
+    at PromisePool.query (/home/yssxyhq/builderApi/node_modules/mysql2/promise.js:341:22)
+    at /home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:37:37
+    at Array.map (<anonymous>)
+    at /home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:32:16
+    at Array.map (<anonymous>)
+    at migrationDB (/home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:26:71)
+    at module.exports (/home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:61:5)
+    at Object.<anonymous> (/home/yssxyhq/builderApi/system/Database/MySQLi/Builder.js:11:50)
+    at Module._compile (node:internal/modules/cjs/loader:1469:14)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1548:10) {
+  code: 'ER_ACCESS_DENIED_ERROR',
+  errno: 1045,
+  sql: undefined,
+  sqlState: '28000',
+  sqlMessage: "Access denied for user 'yssxyhq_yssxyhq_cms_basic'@'cp036009.cloudfly.vn' (using password: YES)"
+}
+
+Node.js v20.17.0
+(node:128282) NOTE: The AWS SDK for JavaScript (v2) will enter maintenance mode
+on September 8, 2024 and reach end-of-support on September 8, 2025.
+
+Please migrate your code to use AWS SDK for JavaScript (v3).
+For more information, check blog post at https://a.co/cUPnyil
+(Use `node --trace-warnings ...` to show where the warning was created)
+/home/yssxyhq/builderApi/node_modules/mysql2/promise.js:341
+    const localErr = new Error();
+                     ^
+
+Error: Access denied for user 'yssxyhq_yssxyhq_cms_basic'@'cp036009.cloudfly.vn' (using password: YES)
+    at PromisePool.query (/home/yssxyhq/builderApi/node_modules/mysql2/promise.js:341:22)
+    at /home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:37:37
+    at Array.map (<anonymous>)
+    at /home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:32:16
+    at Array.map (<anonymous>)
+    at migrationDB (/home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:26:71)
+    at module.exports (/home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:61:5)
+    at Object.<anonymous> (/home/yssxyhq/builderApi/system/Database/MySQLi/Builder.js:11:50)
+    at Module._compile (node:internal/modules/cjs/loader:1469:14)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1548:10) {
+  code: 'ER_ACCESS_DENIED_ERROR',
+  errno: 1045,
+  sql: undefined,
+  sqlState: '28000',
+  sqlMessage: "Access denied for user 'yssxyhq_yssxyhq_cms_basic'@'cp036009.cloudfly.vn' (using password: YES)"
+}
+
+Node.js v20.17.0
+(node:128395) NOTE: The AWS SDK for JavaScript (v2) will enter maintenance mode
+on September 8, 2024 and reach end-of-support on September 8, 2025.
+
+Please migrate your code to use AWS SDK for JavaScript (v3).
+For more information, check blog post at https://a.co/cUPnyil
+(Use `node --trace-warnings ...` to show where the warning was created)
+/home/yssxyhq/builderApi/node_modules/mysql2/promise.js:341
+    const localErr = new Error();
+                     ^
+
+Error: Access denied for user 'yssxyhq_yssxyhq_cms_basic'@'cp036009.cloudfly.vn' (using password: YES)
+    at PromisePool.query (/home/yssxyhq/builderApi/node_modules/mysql2/promise.js:341:22)
+    at /home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:37:37
+    at Array.map (<anonymous>)
+    at /home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:32:16
+    at Array.map (<anonymous>)
+    at migrationDB (/home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:26:71)
+    at module.exports (/home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:61:5)
+    at Object.<anonymous> (/home/yssxyhq/builderApi/system/Database/MySQLi/Builder.js:11:50)
+    at Module._compile (node:internal/modules/cjs/loader:1469:14)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1548:10) {
+  code: 'ER_ACCESS_DENIED_ERROR',
+  errno: 1045,
+  sql: undefined,
+  sqlState: '28000',
+  sqlMessage: "Access denied for user 'yssxyhq_yssxyhq_cms_basic'@'cp036009.cloudfly.vn' (using password: YES)"
+}
+
+Node.js v20.17.0
+(node:128562) NOTE: The AWS SDK for JavaScript (v2) will enter maintenance mode
+on September 8, 2024 and reach end-of-support on September 8, 2025.
+
+Please migrate your code to use AWS SDK for JavaScript (v3).
+For more information, check blog post at https://a.co/cUPnyil
+(Use `node --trace-warnings ...` to show where the warning was created)
+/home/yssxyhq/builderApi/node_modules/mysql2/promise.js:341
+    const localErr = new Error();
+                     ^
+
+Error: Access denied for user 'yssxyhq_yssxyhq_cms_basic'@'cp036009.cloudfly.vn' (using password: YES)
+    at PromisePool.query (/home/yssxyhq/builderApi/node_modules/mysql2/promise.js:341:22)
+    at /home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:37:37
+    at Array.map (<anonymous>)
+    at /home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:32:16
+    at Array.map (<anonymous>)
+    at migrationDB (/home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:26:71)
+    at module.exports (/home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:61:5)
+    at Object.<anonymous> (/home/yssxyhq/builderApi/system/Database/MySQLi/Builder.js:11:50)
+    at Module._compile (node:internal/modules/cjs/loader:1469:14)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1548:10) {
+  code: 'ER_ACCESS_DENIED_ERROR',
+  errno: 1045,
+  sql: undefined,
+  sqlState: '28000',
+  sqlMessage: "Access denied for user 'yssxyhq_yssxyhq_cms_basic'@'cp036009.cloudfly.vn' (using password: YES)"
+}
+
+Node.js v20.17.0
+(node:128593) NOTE: The AWS SDK for JavaScript (v2) will enter maintenance mode
+on September 8, 2024 and reach end-of-support on September 8, 2025.
+
+Please migrate your code to use AWS SDK for JavaScript (v3).
+For more information, check blog post at https://a.co/cUPnyil
+(Use `node --trace-warnings ...` to show where the warning was created)
+/home/yssxyhq/builderApi/node_modules/mysql2/promise.js:341
+    const localErr = new Error();
+                     ^
+
+Error: Access denied for user 'yssxyhq_yssxyhq_cms_basic'@'cp036009.cloudfly.vn' (using password: YES)
+    at PromisePool.query (/home/yssxyhq/builderApi/node_modules/mysql2/promise.js:341:22)
+    at /home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:37:37
+    at Array.map (<anonymous>)
+    at /home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:32:16
+    at Array.map (<anonymous>)
+    at migrationDB (/home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:26:71)
+    at module.exports (/home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:61:5)
+    at Object.<anonymous> (/home/yssxyhq/builderApi/system/Database/MySQLi/Builder.js:11:50)
+    at Module._compile (node:internal/modules/cjs/loader:1469:14)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1548:10) {
+  code: 'ER_ACCESS_DENIED_ERROR',
+  errno: 1045,
+  sql: undefined,
+  sqlState: '28000',
+  sqlMessage: "Access denied for user 'yssxyhq_yssxyhq_cms_basic'@'cp036009.cloudfly.vn' (using password: YES)"
+}
+
+Node.js v20.17.0
+(node:130254) NOTE: The AWS SDK for JavaScript (v2) will enter maintenance mode
+on September 8, 2024 and reach end-of-support on September 8, 2025.
+
+Please migrate your code to use AWS SDK for JavaScript (v3).
+For more information, check blog post at https://a.co/cUPnyil
+(Use `node --trace-warnings ...` to show where the warning was created)
+/home/yssxyhq/builderApi/node_modules/mysql2/promise.js:341
+    const localErr = new Error();
+                     ^
+
+Error: Access denied for user 'yssxyhq_yssxyhq_cms_basic'@'cp036009.cloudfly.vn' (using password: YES)
+    at PromisePool.query (/home/yssxyhq/builderApi/node_modules/mysql2/promise.js:341:22)
+    at /home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:37:37
+    at Array.map (<anonymous>)
+    at /home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:32:16
+    at Array.map (<anonymous>)
+    at migrationDB (/home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:26:71)
+    at module.exports (/home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:61:5)
+    at Object.<anonymous> (/home/yssxyhq/builderApi/system/Database/MySQLi/Builder.js:11:50)
+    at Module._compile (node:internal/modules/cjs/loader:1469:14)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1548:10) {
+  code: 'ER_ACCESS_DENIED_ERROR',
+  errno: 1045,
+  sql: undefined,
+  sqlState: '28000',
+  sqlMessage: "Access denied for user 'yssxyhq_yssxyhq_cms_basic'@'cp036009.cloudfly.vn' (using password: YES)"
+}
+
+Node.js v20.17.0
+(node:130326) NOTE: The AWS SDK for JavaScript (v2) will enter maintenance mode
+on September 8, 2024 and reach end-of-support on September 8, 2025.
+
+Please migrate your code to use AWS SDK for JavaScript (v3).
+For more information, check blog post at https://a.co/cUPnyil
+(Use `node --trace-warnings ...` to show where the warning was created)
+/home/yssxyhq/builderApi/node_modules/mysql2/promise.js:341
+    const localErr = new Error();
+                     ^
+
+Error: Access denied for user 'yssxyhq_yssxyhq_cms_basic'@'cp036009.cloudfly.vn' (using password: YES)
+    at PromisePool.query (/home/yssxyhq/builderApi/node_modules/mysql2/promise.js:341:22)
+    at /home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:37:37
+    at Array.map (<anonymous>)
+    at /home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:32:16
+    at Array.map (<anonymous>)
+    at migrationDB (/home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:26:71)
+    at module.exports (/home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:61:5)
+    at Object.<anonymous> (/home/yssxyhq/builderApi/system/Database/MySQLi/Builder.js:11:50)
+    at Module._compile (node:internal/modules/cjs/loader:1469:14)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1548:10) {
+  code: 'ER_ACCESS_DENIED_ERROR',
+  errno: 1045,
+  sql: undefined,
+  sqlState: '28000',
+  sqlMessage: "Access denied for user 'yssxyhq_yssxyhq_cms_basic'@'cp036009.cloudfly.vn' (using password: YES)"
+}
+
+Node.js v20.17.0
+(node:130444) NOTE: The AWS SDK for JavaScript (v2) will enter maintenance mode
+on September 8, 2024 and reach end-of-support on September 8, 2025.
+
+Please migrate your code to use AWS SDK for JavaScript (v3).
+For more information, check blog post at https://a.co/cUPnyil
+(Use `node --trace-warnings ...` to show where the warning was created)
+/home/yssxyhq/builderApi/node_modules/mysql2/promise.js:341
+    const localErr = new Error();
+                     ^
+
+Error: Access denied for user 'yssxyhq_yssxyhq_cms_basic'@'cp036009.cloudfly.vn' (using password: YES)
+    at PromisePool.query (/home/yssxyhq/builderApi/node_modules/mysql2/promise.js:341:22)
+    at /home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:37:37
+    at Array.map (<anonymous>)
+    at /home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:32:16
+    at Array.map (<anonymous>)
+    at migrationDB (/home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:26:71)
+    at module.exports (/home/yssxyhq/builderApi/system/Database/MySQLi/Connection.js:61:5)
+    at Object.<anonymous> (/home/yssxyhq/builderApi/system/Database/MySQLi/Builder.js:11:50)
+    at Module._compile (node:internal/modules/cjs/loader:1469:14)
+    at Module._extensions..js (node:internal/modules/cjs/loader:1548:10) {
+  code: 'ER_ACCESS_DENIED_ERROR',
+  errno: 1045,
+  sql: undefined,
+  sqlState: '28000',
+  sqlMessage: "Access denied for user 'yssxyhq_yssxyhq_cms_basic'@'cp036009.cloudfly.vn' (using password: YES)"
+}
+
+Node.js v20.17.0
+(node:132900) NOTE: The AWS SDK for JavaScript (v2) will enter maintenance mode
+on September 8, 2024 and reach end-of-support on September 8, 2025.
+
+Please migrate your code to use AWS SDK for JavaScript (v3).
+For more information, check blog post at https://a.co/cUPnyil
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:865664) NOTE: The AWS SDK for JavaScript (v2) will enter maintenance mode
+on September 8, 2024 and reach end-of-support on September 8, 2025.
+
+Please migrate your code to use AWS SDK for JavaScript (v3).
+For more information, check blog post at https://a.co/cUPnyil
+(Use `node --trace-warnings ...` to show where the warning was created)
