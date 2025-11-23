@@ -65,7 +65,7 @@ module.exports = class extends Controller {
 	}
 
 	async rempDataMapping(data, token) {
-		// const toppingData = await get(`${process.env.BASE_URL}/v1/toppings`, {}, 'Token').then(resp => resp?.data ?? {}).catch((e) => { });
+		// Fetch all order_item_toppings with joins in one query
 		const order_item_topping_data = await this.dbOrderItemTopping.find({
 			query: {
 				joinQueries: [
@@ -79,32 +79,57 @@ module.exports = class extends Controller {
 			}
 		});
 
-		const cartWithToppings = await Promise.all(
-			data.map(async (item) => {
-				const toppings = order_item_topping_data?.data.filter(tr => tr.order_item_id === item.id).map(tr => { return { id: tr.id, name: tr.name, price: tr.price } });
+		// Collect all unique (product_id, size_id) pairs
+		const productSizePairs = new Set();
+		data.forEach(item => {
+			if (item.item_type === 'PRODUCT' && item.product_id && item.size_id) {
+				productSizePairs.add(`${item.product_id},${item.size_id}`);
+			}
+		});
 
-				// Chỉ lấy size_price nếu là PRODUCT và có product_id, size_id
-				let sizePriceData = null;
-				if (item.item_type === 'PRODUCT' && item.product_id && item.size_id) {
-					sizePriceData = await get(`${process.env.BASE_URL}/v1/product_size_prices?fq=product_id:${item.product_id},size_id:${item.size_id}`, {}, 'Token').then(resp => resp?.data ?? {}).catch((e) => { });
-				}
+		// Fetch all product_size_prices in one query
+		const dbProductSizePrices = new Model('product_size_prices');
+		let sizePricesData = [];
+		if (productSizePairs.size > 0) {
+			const allSizePrices = await dbProductSizePrices.find({ query: {} });
+			sizePricesData = allSizePrices?.data || [];
+		}
 
-				// Mapping theo item_type
-				let mappedItem = { ...item, size_price: sizePriceData?.[0]?.price || null, toppings };
+		// Create lookup map for size prices
+		const sizePriceMap = {};
+		sizePricesData.forEach(sp => {
+			const key = `${sp.product_id},${sp.size_id}`;
+			sizePriceMap[key] = sp.price;
+		});
 
-				// Nếu là TOPPING, sử dụng topping_name và topping_price
-				if (item.item_type === 'TOPPING') {
-					mappedItem.item_name = item.topping_name || '';
-					mappedItem.item_price = item.topping_price || 0;
-				} else if (item.item_type === 'PRODUCT') {
-					// Nếu là PRODUCT, sử dụng product_name và product_price
-					mappedItem.item_name = item.product_name || '';
-					mappedItem.item_price = item.product_price || 0;
-				}
+		// Map data without async calls
+		const cartWithToppings = data.map((item) => {
+			const toppings = order_item_topping_data?.data
+				.filter(tr => tr.order_item_id === item.id)
+				.map(tr => ({ id: tr.id, name: tr.name, price: tr.price }));
 
-				return mappedItem;
-			})
-		);
+			// Get size_price from lookup map
+			let sizePrice = null;
+			if (item.item_type === 'PRODUCT' && item.product_id && item.size_id) {
+				const key = `${item.product_id},${item.size_id}`;
+				sizePrice = sizePriceMap[key] || null;
+			}
+
+			// Mapping theo item_type
+			let mappedItem = { ...item, size_price: sizePrice, toppings };
+
+			// Nếu là TOPPING, sử dụng topping_name và topping_price
+			if (item.item_type === 'TOPPING') {
+				mappedItem.item_name = item.topping_name || '';
+				mappedItem.item_price = item.topping_price || 0;
+			} else if (item.item_type === 'PRODUCT') {
+				// Nếu là PRODUCT, sử dụng product_name và product_price
+				mappedItem.item_name = item.product_name || '';
+				mappedItem.item_price = item.product_price || 0;
+			}
+
+			return mappedItem;
+		});
 
 		return cartWithToppings;
 	}
