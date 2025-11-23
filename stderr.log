@@ -995,3 +995,9 @@ on September 8, 2024 and reach end-of-support on September 8, 2025.
 Please migrate your code to use AWS SDK for JavaScript (v3).
 For more information, check blog post at https://a.co/cUPnyil
 (Use `node --trace-warnings ...` to show where the warning was created)
+(node:3047781) NOTE: The AWS SDK for JavaScript (v2) will enter maintenance mode
+on September 8, 2024 and reach end-of-support on September 8, 2025.
+
+Please migrate your code to use AWS SDK for JavaScript (v3).
+For more information, check blog post at https://a.co/cUPnyil
+(Use `node --trace-warnings ...` to show where the warning was created)
