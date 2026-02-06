@@ -20,7 +20,7 @@ module.exports = class extends Controller {
                 groupBy = "DATE_FORMAT(o.order_time, '%Y-%m')";
                 dateFormat = "%Y-%m";
             } else {
-                groupBy = "DATE(o.order_time)";
+                groupBy = "DATE_FORMAT(o.order_time, '%Y-%m-%d')";
                 dateFormat = "%Y-%m-%d";
             }
 
