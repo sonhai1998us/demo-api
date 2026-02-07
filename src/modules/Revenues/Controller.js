@@ -37,8 +37,6 @@ module.exports = class extends Controller {
             let query = "";
 
             if (scope === 'product') {
-                // Calculate product revenue: (Price + Toppings) * Quantity - Discount
-                // Discount is applied proportionally to products only
                 query = `
                     SELECT 
                         DATE_FORMAT(o.order_time, '${dateFormat}') as date,
