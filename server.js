@@ -108,12 +108,28 @@ try {
 	io.on('connection', (socket) => {
 		console.log(`[socket] client connected: ${socket.id}`);
 
-		// Client sends their session token → join a private room
+		// Customer: send their session token → join a private room
 		socket.on('join_session', (token) => {
 			if (token && typeof token === 'string') {
 				socket.join(`session:${token}`);
 				console.log(`[socket] ${socket.id} joined room session:${token}`);
 			}
+		});
+
+		// Admin dashboard: join the shared admin broadcast room
+		socket.on('join_admin', () => {
+			socket.join('admin');
+			console.log(`[socket] ${socket.id} joined admin room`);
+		});
+
+		// Trigger from frontend when order AND ALL items are fully inserted
+		socket.on('notify_admin', () => {
+			global.io.to('admin').emit('order:new');
+		});
+
+		// Trigger from frontend when admin updates or deletes an order
+		socket.on('notify_order_changed', () => {
+			global.io.emit('order:refresh');
 		});
 
 		socket.on('disconnect', () => {

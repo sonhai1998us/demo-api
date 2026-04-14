@@ -50,15 +50,31 @@ module.exports = class extends Controller {
       // Lấy tất cả order_id
       const orderIds = orders.map(order => order.id);
 
-      // Lấy tất cả order_items có order_id trong danh sách
+      // Lấy tất cả order_items + joins trực tiếp bằng raw query để tránh bị cap limit
+      const dbRaw = new Model('order_items');
+      const orderIdsStr = orderIds.join(',');
+      const rawResult = await dbRaw.query(`
+        SELECT 
+          order_items.*,
+          products.name as product_name, products.base_price as product_price,
+          toppings.name as topping_name, toppings.price as topping_price,
+          sizes.name as size_name,
+          ice_levels.label as ice_name,
+          sweetness_levels.label as sweetness_name
+        FROM order_items
+        LEFT JOIN products ON products.id = order_items.product_id
+        LEFT JOIN toppings ON toppings.id = order_items.topping_id
+        LEFT JOIN sizes ON sizes.id = order_items.size_id
+        LEFT JOIN ice_levels ON ice_levels.id = order_items.ice_id
+        LEFT JOIN sweetness_levels ON sweetness_levels.id = order_items.sweetness_id
+        WHERE order_items.order_id IN (${orderIdsStr})
+          AND order_items.deleted_at IS NULL
+      `);
       const orderItemsCtrl = new OrderItemsController('order_items');
-      const orderItems = await orderItemsCtrl.fetchItems({
-        query: {
-          fqin: `order_id:${orderIds.toString().replace('"', '')}`,
-          limit: 10000
-        },
-        access_token: 'Token'
-      });
+      const mappedItems = rawResult?.data && rawResult.data.length > 0
+        ? await orderItemsCtrl.rempDataMapping(rawResult.data, 'Token')
+        : [];
+      const orderItems = { data: mappedItems };
 
       // Tạo lookup order_items theo order_id
       const orderItemsByOrderId = {};
@@ -87,19 +103,30 @@ module.exports = class extends Controller {
          session.order_placed = true;
       }
 
-      // Intercept response to emit socket event after successful order creation
-      const originalJson = res.json.bind(res);
-      res.json = (body) => {
-        if (body?.status === 'success' && sessionToken && global.io) {
+      // Insert order manually to capture the new ID
+      req.body.created_at = new Date();
+      req.body.updated_at = new Date();
+      const newId = await this.db.insert(req.body, 'id');
+
+      if (!newId) {
+        return this.response(res, 500, 'Could not create order');
+      }
+
+      // Fetch the newly created order to return it
+      const newOrder = await this.db.get({ id: newId });
+
+      // Notify sockets
+      if (global.io) {
+        if (sessionToken) {
+          const session = global.shopSessions?.get(sessionToken);
           global.io.to(`session:${sessionToken}`).emit('order:created', {
-            queue_position: req.body.queue_position,
+            queue_position: session?.queue_position,
             order_placed: true
           });
         }
-        return originalJson(body);
-      };
+      }
 
-      await super.create(req, res);
+      return res.status(201).json({ status: 'success', data: newOrder });
     } catch (e) {
       this.response(res, 500, e.message);
     }
