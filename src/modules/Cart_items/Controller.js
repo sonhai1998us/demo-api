@@ -135,6 +135,26 @@ module.exports = class extends Controller {
 		}
 	}
 
+	async create(req, res) {
+		try {
+			const sessionToken = req.headers['x-session-token'] || req.body.session_token;
+			if (sessionToken) {
+				if (!global.shopSessions || !global.shopSessions.has(sessionToken)) {
+					return this.response(res, 404, { status: 'error', errors: { msg: 'Session expired or invalid. Please scan QR again.' } });
+				}
+				const session = global.shopSessions.get(sessionToken);
+				if (new Date() > session.expires_at) {
+					global.shopSessions.delete(sessionToken);
+					return this.response(res, 404, { status: 'error', errors: { msg: 'Session expired. Please scan QR again.' } });
+				}
+				req.body.session_token = sessionToken;
+			}
+			await super.create(req, res);
+		} catch (e) {
+			this.response(res, 500, e.message);
+		}
+	}
+
 	async rempDataMapping(data, token) {
 		// const toppingData = await get(`${process.env.BASE_URL}/v1/toppings`, {}, 'Token').then(resp => resp?.data ?? {}).catch((e) => { });
 		const cart_item_topping_data = await this.dbCartItemTopping.find({

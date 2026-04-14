@@ -260,3 +260,7 @@ ALTER TABLE order_items
   
   ALTER TABLE order_item_toppings
     ADD COLUMN quantity INT NOT NULL DEFAULT 1;
+
+  ALTER TABLE orders 
+    ADD COLUMN queue_position INT NULL,
+    ADD COLUMN session_token VARCHAR(128) NULL

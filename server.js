@@ -87,7 +87,40 @@ try {
 		res.send('Hi ' + process.env.NODE_ENV + ' - version: 1.0.0');
 	})
 
-	server = require('http').createServer(app);
-	server.listen(process.env.PORT || 3000, '0.0.0.0');
+	const httpServer = require('http').createServer(app);
+
+	// Attach Socket.io
+	const { Server } = require('socket.io');
+	const io = new Server(httpServer, {
+		cors: {
+			origin: process.env.NODE_ENV === 'development'
+				? '*'
+				: ['https://1996tea.netlify.app', 'http://localhost:3000'],
+			methods: ['GET', 'POST'],
+			credentials: true
+		},
+		transports: ['websocket', 'polling']
+	});
+
+	// Make io accessible globally from any Controller
+	global.io = io;
+
+	io.on('connection', (socket) => {
+		console.log(`[socket] client connected: ${socket.id}`);
+
+		// Client sends their session token → join a private room
+		socket.on('join_session', (token) => {
+			if (token && typeof token === 'string') {
+				socket.join(`session:${token}`);
+				console.log(`[socket] ${socket.id} joined room session:${token}`);
+			}
+		});
+
+		socket.on('disconnect', () => {
+			console.log(`[socket] client disconnected: ${socket.id}`);
+		});
+	});
+
+	httpServer.listen(process.env.PORT || 3000, '0.0.0.0');
 	console.log(`Api master | ${process.env.NODE_ENV} - ${process.pid} is running on port ${process.env.PORT}`);
-} catch (e) { console.log('ee',e, process.env) }
+} catch (e) { console.log('ee', e, process.env) }

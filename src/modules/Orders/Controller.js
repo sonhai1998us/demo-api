@@ -76,4 +76,32 @@ module.exports = class extends Controller {
       this.response(res, 500, e.message);
     }
   }
+
+  async create(req, res) {
+    try {
+      const sessionToken = req.headers['x-session-token'] || req.body.session_token;
+      if (sessionToken && global.shopSessions && global.shopSessions.has(sessionToken)) {
+         const session = global.shopSessions.get(sessionToken);
+         req.body.session_token = sessionToken;
+         req.body.queue_position = session.queue_position;
+         session.order_placed = true;
+      }
+
+      // Intercept response to emit socket event after successful order creation
+      const originalJson = res.json.bind(res);
+      res.json = (body) => {
+        if (body?.status === 'success' && sessionToken && global.io) {
+          global.io.to(`session:${sessionToken}`).emit('order:created', {
+            queue_position: req.body.queue_position,
+            order_placed: true
+          });
+        }
+        return originalJson(body);
+      };
+
+      await super.create(req, res);
+    } catch (e) {
+      this.response(res, 500, e.message);
+    }
+  }
 }
