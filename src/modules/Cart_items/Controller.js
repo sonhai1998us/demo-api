@@ -143,7 +143,7 @@ module.exports = class extends Controller {
 					return this.response(res, 404, { status: 'error', errors: { msg: 'Session expired or invalid. Please scan QR again.' } });
 				}
 				const session = global.shopSessions.get(sessionToken);
-				if (new Date(Date.now() + 7 * 3600 * 1000) > session.expires_at) {
+				if (new Date() > session.expires_at) {
 					global.shopSessions.delete(sessionToken);
 					return this.response(res, 404, { status: 'error', errors: { msg: 'Session expired. Please scan QR again.' } });
 				}

@@ -263,4 +263,7 @@ ALTER TABLE order_items
 
   ALTER TABLE orders 
     ADD COLUMN queue_position INT NULL,
-    ADD COLUMN session_token VARCHAR(128) NULL
+    ADD COLUMN session_token VARCHAR(128) NULL;
+
+  ALTER TABLE cart_items 
+    ADD COLUMN session_token VARCHAR(128) NULL;
