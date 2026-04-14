@@ -13,7 +13,7 @@ module.exports = () => {
     const _conn = mysql.createPool({
       database: dbName,
       host: process.env.DB_HOST,
-      port: 3306,
+      port: 35302,
       user: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       charset: process.env.DB_CHARSET,
