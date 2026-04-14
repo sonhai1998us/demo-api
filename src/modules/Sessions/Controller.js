@@ -24,8 +24,8 @@ module.exports = class extends Controller {
             const sessionData = {
                 token,
                 queue_position: position,
-                joined_at: new Date(),
-                expires_at: new Date(Date.now() + 2 * 60 * 60 * 1000), // 2 hours TTL
+                joined_at: new Date(Date.now() + 7 * 3600 * 1000),
+                expires_at: new Date(Date.now() + (7 + 2) * 3600 * 1000), // GMT+7 + 2 hours TTL
                 order_placed: false
             };
             
@@ -51,7 +51,7 @@ module.exports = class extends Controller {
             }
             
             // Optionally check expiration
-            if (new Date() > session.expires_at) {
+            if (new Date(Date.now() + 7 * 3600 * 1000) > session.expires_at) {
                 global.shopSessions.delete(token);
                 // Notify client via socket that session has expired
                 if (global.io) {
