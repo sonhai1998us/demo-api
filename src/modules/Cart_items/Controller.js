@@ -88,6 +88,7 @@ module.exports = class extends Controller {
 	constructor(tableName) {
 		super(tableName);
 		this.dbCartItemTopping = new Model('cart_item_toppings');
+		this.dbProductSizePrice = new Model('product_size_prices');
 	}
 
 	async getAll(req, res) {
@@ -157,8 +158,13 @@ module.exports = class extends Controller {
 
 	async rempDataMapping(data, token) {
 		// const toppingData = await get(`${process.env.BASE_URL}/v1/toppings`, {}, 'Token').then(resp => resp?.data ?? {}).catch((e) => { });
-		const cart_item_topping_data = await this.dbCartItemTopping.find({
+		// Chỉ lấy topping của các món đang có trong giỏ (bảng cart_item_toppings tăng mãi, mặc định find chỉ trả 100 dòng)
+		const cartItemIds = data.map(item => item.id).filter(Boolean);
+		const cart_item_topping_data = cartItemIds.length === 0 ? { data: [] } : await this.dbCartItemTopping.find({
 			query: {
+				fqin: `cart_item_id:${cartItemIds.join(',')}`,
+				fqnull: 'deleted_at',
+				limit: 1000,
 				joinQueries: [
 					{
 						fieldJoin: 'topping_id',
@@ -170,18 +176,25 @@ module.exports = class extends Controller {
 			}
 		});
 
+		// Lấy giá size trực tiếp từ DB (không gọi HTTP qua BASE_URL — nếu BASE_URL sai thì size_price luôn null)
+		const sizePriceMap = {};
+		if (data.some(item => item.item_type === 'PRODUCT' && item.product_id && item.size_id)) {
+			const sizePrices = await this.dbProductSizePrice.find({ query: { fqnull: 'deleted_at', limit: 1000 } });
+			(sizePrices?.data || []).forEach(sp => { sizePriceMap[`${sp.product_id},${sp.size_id}`] = sp.price; });
+		}
+
 		const cartWithToppings = await Promise.all(
 			data.map(async (item) => {
-				const toppings = cart_item_topping_data?.data.filter(tr => tr.cart_item_id === item.id).map(tr => { return { id: tr.id, name: tr.name, price: tr.price } });
-				
+				const toppings = (cart_item_topping_data?.data ?? []).filter(tr => tr.cart_item_id === item.id).map(tr => { return { id: tr.id, name: tr.name, price: tr.price } });
+
 				// Chỉ lấy size_price nếu là PRODUCT và có product_id, size_id
-				let sizePriceData = null;
+				let sizePrice = null;
 				if (item.item_type === 'PRODUCT' && item.product_id && item.size_id) {
-					sizePriceData = await get(`${process.env.BASE_URL}/v1/product_size_prices?fq=product_id:${item.product_id},size_id:${item.size_id}`, {}, 'Token').then(resp => resp?.data ?? {}).catch((e) => { });
+					sizePrice = sizePriceMap[`${item.product_id},${item.size_id}`] || null;
 				}
-				
+
 				// Mapping theo item_type
-				let mappedItem = { ...item, size_price: sizePriceData?.[0]?.price || null, toppings };
+				let mappedItem = { ...item, size_price: sizePrice, toppings };
 				
 				// Nếu là TOPPING, sử dụng topping_name và topping_price
 				if (item.item_type === 'TOPPING') {
